@@ -1,0 +1,153 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: members
+    // Document ID: auto-generated
+    // Fields:
+    //   - serviceNo: string (required, max 50 chars)
+    //   - rank: string (optional, max 50 chars)
+    //   - name: string (required, max 100 chars)
+    //   - aadharNo: string (optional, max 20 chars)
+    //   - panNo: string (optional, max 20 chars)
+    //   - email: string (optional, valid email)
+    //   - defenceService: string (optional, max 50 chars)
+    //   - dob: string (optional, max 50 chars)
+    //   - dateOfRetirement: string (optional, max 50 chars)
+    //   - serviceYears: string (optional, max 50 chars)
+    //   - ppoNo: string (optional, max 50 chars)
+    //   - spouseName: string (optional, max 100 chars)
+    //   - address: string (optional, max 500 chars)
+    //   - phone: string (required, max 20 chars)
+    //   - status: string (required, enum: 'pending', 'active', 'rejected')
+    //   - paymentId: string (optional, max 100 chars)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: events
+    // Document ID: auto-generated
+    // Fields:
+    //   - title: string (required, max 200 chars)
+    //   - description: string (required, max 2000 chars)
+    //   - date: timestamp (required)
+    //   - location: string (optional, max 200 chars)
+    //   - imageUrl: string (optional, valid URL)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: gallery
+    // Document ID: auto-generated
+    // Fields:
+    //   - title: string (required, max 200 chars)
+    //   - imageUrl: string (required, valid URL)
+    //   - date: timestamp (optional)
+    //   - createdAt: timestamp (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.email == "SATYASHALEM456@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidUrl(url) {
+      return url is string && (url.matches("^https://.*") || url.matches("^http://.*"));
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidMember(data) {
+      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'createdAt'];
+      return hasOnlyAllowedFields(allowedFields) &&
+        data.serviceNo is string && data.serviceNo.size() > 0 && data.serviceNo.size() <= 50 &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+        data.phone is string && data.phone.size() > 0 && data.phone.size() <= 20 &&
+        data.status in ['pending', 'active', 'rejected'] &&
+        data.createdAt is timestamp &&
+        (!('rank' in data) || data.rank == null || (data.rank is string && data.rank.size() <= 50)) &&
+        (!('aadharNo' in data) || data.aadharNo == null || (data.aadharNo is string && data.aadharNo.size() <= 20)) &&
+        (!('panNo' in data) || data.panNo == null || (data.panNo is string && data.panNo.size() <= 20)) &&
+        (!('email' in data) || data.email == null || data.email == "" || isValidEmail(data.email)) &&
+        (!('defenceService' in data) || data.defenceService == null || (data.defenceService is string && data.defenceService.size() <= 50)) &&
+        (!('dob' in data) || data.dob == null || (data.dob is string && data.dob.size() <= 50)) &&
+        (!('dateOfRetirement' in data) || data.dateOfRetirement == null || (data.dateOfRetirement is string && data.dateOfRetirement.size() <= 50)) &&
+        (!('serviceYears' in data) || data.serviceYears == null || (data.serviceYears is string && data.serviceYears.size() <= 50)) &&
+        (!('ppoNo' in data) || data.ppoNo == null || (data.ppoNo is string && data.ppoNo.size() <= 50)) &&
+        (!('spouseName' in data) || data.spouseName == null || (data.spouseName is string && data.spouseName.size() <= 100)) &&
+        (!('address' in data) || data.address == null || (data.address is string && data.address.size() <= 500)) &&
+        (!('paymentId' in data) || data.paymentId == null || (data.paymentId is string && data.paymentId.size() <= 100));
+    }
+
+    function isValidEvent(data) {
+      let allowedFields = ['title', 'description', 'date', 'location', 'imageUrl', 'createdAt'];
+      return hasOnlyAllowedFields(allowedFields) &&
+        data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+        data.description is string && data.description.size() > 0 && data.description.size() <= 2000 &&
+        data.date is timestamp &&
+        data.createdAt is timestamp &&
+        (!('location' in data) || data.location == null || (data.location is string && data.location.size() <= 200)) &&
+        (!('imageUrl' in data) || data.imageUrl == null || data.imageUrl == "" || isValidUrl(data.imageUrl));
+    }
+
+    function isValidGalleryItem(data) {
+      let allowedFields = ['title', 'imageUrl', 'date', 'createdAt'];
+      return hasOnlyAllowedFields(allowedFields) &&
+        data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+        data.imageUrl is string && isValidUrl(data.imageUrl) &&
+        data.createdAt is timestamp &&
+        (!('date' in data) || data.date == null || data.date is timestamp);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /members/{memberId} {
+      // Public can create a pending membership application
+      allow create: if isValidMember(request.resource.data) && request.resource.data.status == 'pending';
+      // Public can read active members (for the Members Directory) OR admin can read all
+      allow read: if resource.data.status == 'active' || isAdmin();
+      // Only admin can update or delete members (e.g., approve them)
+      allow update: if isAdmin() && isValidMember(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      // Public can read events
+      allow read: if true;
+      // Only admin can manage events
+      allow create: if isAdmin() && isValidEvent(request.resource.data);
+      allow update: if isAdmin() && isValidEvent(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /gallery/{galleryId} {
+      // Public can read gallery
+      allow read: if true;
+      // Only admin can manage gallery
+      allow create: if isAdmin() && isValidGalleryItem(request.resource.data);
+      allow update: if isAdmin() && isValidGalleryItem(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

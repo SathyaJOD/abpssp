@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "Member": {
+      "title": "Member",
+      "description": "An ex-serviceman or supporter applying for membership.",
+      "type": "object",
+      "properties": {
+        "serviceNo": { "type": "string", "description": "Military service number." },
+        "rank": { "type": "string", "description": "Military rank." },
+        "name": { "type": "string", "description": "Full name of the member." },
+        "aadharNo": { "type": "string", "description": "Aadhar Number." },
+        "panNo": { "type": "string", "description": "PAN Number." },
+        "email": { "type": "string", "format": "email", "description": "Email address." },
+        "defenceService": { "type": "string", "description": "Defence Service (e.g., Army, Navy, Air Force)." },
+        "dob": { "type": "string", "description": "Date of Birth." },
+        "dateOfRetirement": { "type": "string", "description": "Date of Retirement." },
+        "serviceYears": { "type": "string", "description": "Years of Service." },
+        "ppoNo": { "type": "string", "description": "PPO Number." },
+        "spouseName": { "type": "string", "description": "Name of Spouse." },
+        "address": { "type": "string", "description": "Residential Address." },
+        "phone": { "type": "string", "description": "Mobile Number." },
+        "status": { "type": "string", "enum": ["pending", "active", "rejected"], "description": "Membership status." },
+        "paymentId": { "type": "string", "description": "Transaction ID for the membership fee." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Application date." }
+      },
+      "required": ["name", "phone", "serviceNo", "status", "createdAt"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "An organization event.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Event title." },
+        "description": { "type": "string", "description": "Event description." },
+        "date": { "type": "string", "format": "date-time", "description": "Date of the event." },
+        "location": { "type": "string", "description": "Event location." },
+        "imageUrl": { "type": "string", "description": "URL of the event image." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation date." }
+      },
+      "required": ["title", "description", "date", "createdAt"]
+    },
+    "GalleryItem": {
+      "title": "Gallery Item",
+      "description": "A photo in the gallery.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Photo title or caption." },
+        "imageUrl": { "type": "string", "description": "URL of the photo." },
+        "date": { "type": "string", "format": "date-time", "description": "Date the photo was taken." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation date." }
+      },
+      "required": ["title", "imageUrl", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/members/{memberId}": {
+      "schema": { "$ref": "#/entities/Member" },
+      "description": "Collection of membership applications and active members."
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Collection of upcoming and past events."
+    },
+    "/gallery/{galleryId}": {
+      "schema": { "$ref": "#/entities/GalleryItem" },
+      "description": "Collection of gallery photos."
+    }
+  }
+}
