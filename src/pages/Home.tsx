@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, ChevronRight, Mail, MapPin, Phone } from 'lucide-react';
+import { CheckCircle, ChevronRight, Mail, MapPin, Phone, User } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -8,16 +8,16 @@ export default function Home() {
       
       {/* Hero Section */}
       <section 
-        className="relative h-[500px] bg-cover bg-center flex items-center"
-        style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&q=80")' }}
+        className="relative min-h-[400px] md:min-h-[500px] bg-cover bg-center flex items-center py-16 md:py-0"
+        style={{ backgroundImage: 'url("https://image.pollinations.ai/prompt/A%20wide%20panoramic%208K%20ultra%20HD%20sky%20background%20with%20a%20smooth%20gradient%20from%20deep%20blue%20at%20the%20top%20to%20soft%20pastel%20tones%20near%20the%20horizon.%20Soft%2C%20fluffy%20clouds%20are%20scattered%20across%20the%20sky%20with%20warm%20sunlight%20glow%20near%20the%20bottom.%20On%20the%20right%20side%2C%20a%20highly%20transparent%2C%20very%20faint%20Indian%20national%20flag%20is%20gently%20flowing%20in%20the%20air%2C%20with%20saffron%2C%20white%2C%20and%20green%20colors%20softly%20blended%20into%20the%20sky.%20The%20Ashoka%20Chakra%20is%20barely%20visible.%20The%20flag%20should%20appear%20extremely%20light%2C%20elegant%2C%20and%20highly%20blurred%2C%20blending%20naturally%20into%20the%20sky.%20Clean%20composition%20with%20empty%20space%20on%20the%20left%20side%20for%20text.%20No%20people%2C%20no%20buildings%2C%20minimal%2C%20professional%20website%20banner%20style.?width=1920&height=500&nologo=true")' }}
       >
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               Serving the Nation<br />After Service
             </h1>
-            <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-md font-medium">
+            <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-medium">
               Dedicated to the Welfare of<br />Ex-Servicemen & Veeranaris
             </p>
             <Link 
@@ -37,9 +37,9 @@ export default function Home() {
             "Nation First Always and Every Time."
           </h2>
           <img 
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png" 
-            alt="Indian Flag" 
-            className="h-6 w-9 object-cover rounded-sm shadow-sm hidden sm:block"
+            src="https://abpssp.in/wp-content/uploads/2021/10/LOGO1-e1655295576596.png" 
+            alt="ABPSSP Logo" 
+            className="h-10 w-10 object-cover object-top rounded-full bg-white p-0.5 shadow-sm hidden sm:block"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -50,9 +50,11 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a8a] mb-6">About ABPSSP</h2>
-            <p className="text-slate-700 text-lg leading-relaxed mb-8 text-justify">
-              Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP) is an All India voluntary ex organization dedicated to national service, community development, and welfare of ex-servicemen and the Veeranaris. This organization works on the principle of "Nation First Always and Every Time."
-            </p>
+            <div className="text-slate-700 text-lg leading-relaxed mb-8 text-justify space-y-4">
+              <p>
+                Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP) is an all-India voluntary organization of ex-servicemen. It is apolitical and non-profit oriented, working for national security, community development, and the welfare of ex-servicemen and Veer Naris. The organization brings ex-servicemen together on one platform, promoting discipline, patriotism, and service to the nation under the principle <span className="font-bold text-[#ea580c]">“Nation First Always and Every Time.”</span>
+              </p>
+            </div>
             <Link 
               to="/about" 
               className="inline-flex items-center bg-gradient-to-r from-[#ea580c] to-[#f97316] hover:from-[#c2410c] hover:to-[#ea580c] text-white font-bold py-2.5 px-6 rounded shadow-md transition-all"
@@ -85,23 +87,19 @@ export default function Home() {
                 <h3 className="text-xl font-bold text-[#2f5a28]">Main Objectives</h3>
               </div>
               <div className="p-6 flex-1 flex flex-col">
+                <img 
+                  src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80" 
+                  alt="Objectives" 
+                  className="w-full h-36 object-cover rounded-lg mb-6"
+                  referrerPolicy="no-referrer"
+                />
                 <ul className="space-y-3 mb-6 flex-1">
-                  {[
-                    'Welfare and rights of ex-servicemen',
-                    'Support to Veeranaris and families',
-                    'Motivate youth to join armed forces',
-                    'Protect Indian traditions and culture',
-                    'Provide legal assistance to ex servicemen',
-                    'Support during natural calamities',
-                    'Promote patriotism and national unity'
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-[#ea580c] shrink-0 mt-0.5" />
-                      <span className="text-slate-700 text-sm font-medium">{item}</span>
-                    </li>
-                  ))}
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="h-5 w-5 text-[#ea580c] shrink-0 mt-0.5" />
+                    <span className="text-slate-700 text-sm font-medium">Welfare and rights of ex-servicemen & Veer Naris</span>
+                  </li>
                 </ul>
-                <div className="text-center mb-6">
+                <div className="text-center">
                   <Link 
                     to="/objectives" 
                     className="inline-flex items-center bg-gradient-to-r from-[#ea580c] to-[#f97316] hover:from-[#c2410c] hover:to-[#ea580c] text-white font-bold py-2 px-6 rounded shadow transition-all"
@@ -109,12 +107,6 @@ export default function Home() {
                     Learn More <ChevronRight className="ml-1 h-4 w-4" />
                   </Link>
                 </div>
-                <img 
-                  src="https://images.unsplash.com/photo-1596423735880-5c62b9f66487?auto=format&fit=crop&q=80" 
-                  alt="Soldiers" 
-                  className="w-full h-32 object-cover rounded-lg"
-                  referrerPolicy="no-referrer"
-                />
               </div>
             </div>
 
@@ -126,23 +118,28 @@ export default function Home() {
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex justify-center gap-2 mb-6">
                   <div className="text-center">
-                    <img src="https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?auto=format&fit=crop&q=80&w=150&h=150" alt="Leader" className="w-20 h-24 object-cover rounded border-2 border-[#ea580c] mx-auto mb-1" referrerPolicy="no-referrer" />
+                    <div className="w-20 h-24 bg-slate-100 rounded border-2 border-slate-200 mx-auto mb-1 flex items-center justify-center text-slate-300">
+                      <User className="h-10 w-10" />
+                    </div>
                     <p className="text-[10px] font-bold bg-[#d5e0c5] text-[#2f5a28] px-1 py-0.5 rounded">Natl President</p>
                   </div>
                   <div className="text-center">
-                    <img src="https://images.unsplash.com/photo-1555952517-2e8e729e0b44?auto=format&fit=crop&q=80&w=150&h=150" alt="Leader" className="w-20 h-24 object-cover rounded border-2 border-[#ea580c] mx-auto mb-1" referrerPolicy="no-referrer" />
+                    <div className="w-20 h-24 bg-slate-100 rounded border-2 border-slate-200 mx-auto mb-1 flex items-center justify-center text-slate-300">
+                      <User className="h-10 w-10" />
+                    </div>
                     <p className="text-[10px] font-bold bg-[#d5e0c5] text-[#2f5a28] px-1 py-0.5 rounded">AP President</p>
                   </div>
                   <div className="text-center">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&h=150" alt="Leader" className="w-20 h-24 object-cover rounded border-2 border-[#ea580c] mx-auto mb-1" referrerPolicy="no-referrer" />
-                    <p className="text-[10px] font-bold bg-[#d5e0c5] text-[#2f5a28] px-1 py-0.5 rounded">Gen Secretary</p>
+                    <div className="w-20 h-24 bg-slate-100 rounded border-2 border-slate-200 mx-auto mb-1 flex items-center justify-center text-slate-300">
+                      <User className="h-10 w-10" />
+                    </div>
+                    <p className="text-[10px] font-bold bg-[#d5e0c5] text-[#2f5a28] px-1 py-0.5 rounded">State VP</p>
                   </div>
                 </div>
                 <ul className="space-y-3 mb-6 flex-1">
                   <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> Lt Gen VK Chaturvedi <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
-                  <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> Wg Cdr Syam Prasad Sharma <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
-                  <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> Hony Capt Anma Rao Appikatla <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
-                  <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> Sub K K N Rao <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
+                  <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> Colonel Paleti Rambabu <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
+                  <li className="flex items-center gap-2 text-sm font-semibold text-slate-800"><span className="w-1.5 h-1.5 rounded-full bg-[#ea580c]"></span> AC CBR Prasad <span className="text-xs font-normal text-slate-500">(Retd)</span></li>
                 </ul>
                 <div className="text-center">
                   <Link 
@@ -158,7 +155,7 @@ export default function Home() {
             {/* Events */}
             <div className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col border border-slate-200">
               <div className="py-4 px-6 text-center border-b border-slate-100">
-                <h3 className="text-2xl font-bold text-[#1e3a8a]">Events</h3>
+                <h3 className="text-2xl font-bold text-[#1e3a8a]">Events & Programs</h3>
               </div>
               <div className="p-6 flex-1 flex flex-col">
                 <img 
@@ -168,18 +165,10 @@ export default function Home() {
                   referrerPolicy="no-referrer"
                 />
                 <ul className="space-y-3 mb-6 flex-1">
-                  {[
-                    'Netaji Subhash Chandra Bose Jayanti',
-                    'Vijay Diwas',
-                    'Kargil Vijay Diwas',
-                    'Walong Day',
-                    'National Integration programs'
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] shrink-0"></span>
-                      {item}
-                    </li>
-                  ))}
+                  <li className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] shrink-0"></span>
+                    Netaji Subhash Chandra Bose Jayanti
+                  </li>
                 </ul>
                 <div className="text-center">
                   <Link 
@@ -205,19 +194,27 @@ export default function Home() {
             <div className="p-8 md:w-3/5 z-10 relative">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Membership</h2>
               <p className="text-xl text-emerald-100 mb-6 font-medium">
-                Join ABPSSP and Support the Welfare of ex-Servicemen & Veeranaris
+                ABPSSP invites service-minded people to contribute to nation-building.
               </p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-white font-medium">
-                  <CheckCircle className="h-5 w-5 text-[#facc15]" /> Ex servicemen, spouses
-                </li>
-                <li className="flex items-center gap-2 text-white font-medium">
-                  <CheckCircle className="h-5 w-5 text-[#facc15]" /> Veeranaris
-                </li>
-                <li className="flex items-center gap-2 text-white font-medium">
-                  <CheckCircle className="h-5 w-5 text-[#facc15]" /> Become a Member
-                </li>
-              </ul>
+              
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-[#facc15] mb-3">Eligible:</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-2 text-white font-medium">
+                    <CheckCircle className="h-5 w-5 text-[#facc15]" /> Ex-servicemen
+                  </li>
+                  <li className="flex items-center gap-2 text-white font-medium">
+                    <CheckCircle className="h-5 w-5 text-[#facc15]" /> Spouses
+                  </li>
+                  <li className="flex items-center gap-2 text-white font-medium">
+                    <CheckCircle className="h-5 w-5 text-[#facc15]" /> Veer Naris
+                  </li>
+                  <li className="flex items-center gap-2 text-white font-medium">
+                    <CheckCircle className="h-5 w-5 text-[#facc15]" /> Sponsored Members (Donate ₹50,000+)
+                  </li>
+                </ul>
+              </div>
+
               <div className="flex flex-wrap items-center gap-4">
                 <Link 
                   to="/membership" 
@@ -226,7 +223,7 @@ export default function Home() {
                   Become a Member
                 </Link>
                 <div className="bg-white/20 backdrop-blur-sm border border-white/30 text-white font-bold py-2 px-6 rounded-lg text-2xl flex items-center gap-2">
-                  <span>₹ 100/-</span>
+                  <span>Fee: ₹ 100/-</span>
                 </div>
               </div>
             </div>
@@ -250,25 +247,31 @@ export default function Home() {
                 <div className="bg-[#1e3a8a] p-1 rounded mt-0.5">
                   <CheckCircle className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-slate-800 font-medium">Col Manenia Ravt (Retd)</span>
+                <span className="text-slate-800 font-medium">Col Munama Ravi (Retd) – 8106912448</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="bg-[#1e3a8a] p-1 rounded mt-0.5">
                   <CheckCircle className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-slate-800 font-medium">Wg Cdr Syam Prasad Sharma (Retd)</span>
+                <span className="text-slate-800 font-medium">Wg Cdr Syam Prasad Sharma (Retd) – 8527032158</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="bg-[#1e3a8a] p-1 rounded mt-0.5">
                   <CheckCircle className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-slate-800 font-medium">Hony Capt Anma Rao Appikatla</span>
+                <span className="text-slate-800 font-medium">Hony Capt Amma Rao Appikatla (Retd) – 9441110294</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="bg-[#1e3a8a] p-1 rounded mt-0.5">
                   <CheckCircle className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-slate-800 font-medium">Sub K K N Rao (Retd)</span>
+                <span className="text-slate-800 font-medium">Sub K K N Rao (Retd) – 9951387899</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="bg-[#1e3a8a] p-1 rounded mt-0.5">
+                  <CheckCircle className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-slate-800 font-medium">Dr Mamta Misra – 9885754783</span>
               </li>
               <li className="flex items-start gap-3 mt-4 pt-4 border-t border-[#d5e0c5]">
                 <Mail className="h-5 w-5 text-[#ea580c] shrink-0" />

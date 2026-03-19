@@ -1,12 +1,101 @@
 import { useState, useEffect } from 'react';
 import { collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Calendar, MapPin, Loader2 } from 'lucide-react';
+import { 
+  Calendar, 
+  MapPin, 
+  Loader2, 
+  CheckCircle,
+  Flag,
+  ShieldCheck,
+  HeartPulse,
+  GraduationCap,
+  LifeBuoy,
+  Tractor,
+  Users,
+  Star
+} from 'lucide-react';
 import { format } from 'date-fns';
 
 export default function Events() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const activities = [
+    {
+      title: "National & Patriotic Events",
+      icon: <Flag className="h-6 w-6 text-[#ea580c]" />,
+      items: [
+        "Celebration of Kargil Vijay Diwas",
+        "Observance of Netaji Subhas Chandra Bose Jayanti",
+        "Independence Day & Republic Day programs",
+        "Tribute ceremonies for martyrs and war heroes"
+      ]
+    },
+    {
+      title: "Veteran Welfare Programs",
+      icon: <ShieldCheck className="h-6 w-6 text-[#1e3a8a]" />,
+      items: [
+        "Support programs for ex-servicemen and their families",
+        "Assistance for war widows and dependents",
+        "Pension guidance and welfare awareness camps"
+      ]
+    },
+    {
+      title: "Medical & Health Camps",
+      icon: <HeartPulse className="h-6 w-6 text-[#2f5a28]" />,
+      items: [
+        "Free health check-up camps in rural areas",
+        "Awareness programs on hygiene and sanitation",
+        "Blood donation drives and emergency medical support"
+      ]
+    },
+    {
+      title: "Youth Motivation & Training",
+      icon: <GraduationCap className="h-6 w-6 text-[#ea580c]" />,
+      items: [
+        "Career guidance and motivational seminars for youth",
+        "Personality development and leadership training",
+        "Awareness sessions on joining Armed Forces"
+      ]
+    },
+    {
+      title: "Disaster Relief & Rescue Activities",
+      icon: <LifeBuoy className="h-6 w-6 text-[#1e3a8a]" />,
+      items: [
+        "Participation in relief operations during floods, cyclones, and emergencies",
+        "Distribution of food, medicines, and essential supplies",
+        "Rehabilitation support for affected communities"
+      ]
+    },
+    {
+      title: "Social Service & Community Development",
+      icon: <Tractor className="h-6 w-6 text-[#2f5a28]" />,
+      items: [
+        "Rural development initiatives",
+        "Cleanliness drives and environmental programs",
+        "Support for education and underprivileged communities"
+      ]
+    },
+    {
+      title: "Meetings & Organizational Events",
+      icon: <Users className="h-6 w-6 text-[#ea580c]" />,
+      items: [
+        "State, district, and unit-level meetings",
+        "Training sessions for members and office bearers",
+        "Annual gatherings and coordination meetings"
+      ]
+    },
+    {
+      title: "Special Programs",
+      icon: <Star className="h-6 w-6 text-[#1e3a8a]" />,
+      items: [
+        "Sainik Sammelan (veterans meet)",
+        "Awareness rallies and public engagement activities",
+        "Cultural and patriotic events"
+      ]
+    }
+  ];
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -35,10 +124,41 @@ export default function Events() {
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <Calendar className="mx-auto h-12 w-12 text-emerald-600 mb-4" />
-          <h2 className="text-3xl font-extrabold text-slate-900">Upcoming & Past Events</h2>
-          <p className="mt-4 text-lg text-slate-600">
-            Stay updated with our latest activities and programs.
+          <Calendar className="mx-auto h-12 w-12 text-[#1e3a8a] mb-4" />
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Activities & Initiatives</h2>
+          <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+            The <strong>Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP)</strong> actively organizes a wide range of events and programs aimed at serving society, supporting veterans, and promoting patriotism.
+          </p>
+        </div>
+
+        {/* Activities Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {activities.map((activity, idx) => (
+            <div key={idx} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+                <div className="bg-slate-50 p-2 rounded-lg">
+                  {activity.icon}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">{activity.title}</h3>
+              </div>
+              <ul className="space-y-3">
+                {activity.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-slate-600 text-sm">
+                    <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Our Approach */}
+        <div className="bg-gradient-to-r from-[#2f5a28] to-[#4d8045] rounded-2xl shadow-xl overflow-hidden border border-green-800 p-10 text-center mb-16">
+          <Star className="h-12 w-12 text-[#facc15] mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-white mb-4">Our Approach</h2>
+          <p className="text-green-100 text-xl max-w-4xl mx-auto leading-relaxed">
+            Every event and program conducted by ABPSSP reflects the values of <strong>Service (Seva), Courage (Sahas), and Respect (Samman)</strong>, ensuring continued contribution to society and the nation.
           </p>
         </div>
 
@@ -46,8 +166,10 @@ export default function Events() {
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-10 w-10 text-emerald-600 animate-spin" />
           </div>
-        ) : events.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        ) : events.length > 0 && (
+          <>
+            <h3 className="text-2xl font-bold text-slate-900 mb-8">Latest Updates & Events</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.map((event) => (
               <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300 flex flex-col">
                 <div className="relative h-48 bg-slate-200">
@@ -91,10 +213,7 @@ export default function Events() {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="text-center py-20 bg-white rounded-xl border border-slate-200 shadow-sm">
-            <p className="text-slate-500 text-lg">No events scheduled at the moment.</p>
-          </div>
+          </>
         )}
       </div>
     </div>

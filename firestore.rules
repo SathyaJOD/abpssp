@@ -132,6 +132,17 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /ppo_numbers/{ppoNo} {
+      // Public can read to check for duplicates
+      allow read: if true;
+      // Public can create when submitting an application
+      allow create: if request.resource.data.keys().hasOnly(['memberId', 'createdAt']) &&
+                       request.resource.data.memberId is string &&
+                       request.resource.data.createdAt is timestamp;
+      // Only admin can update or delete
+      allow update, delete: if isAdmin();
+    }
+
     match /events/{eventId} {
       // Public can read events
       allow read: if true;

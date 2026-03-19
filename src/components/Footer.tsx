@@ -10,9 +10,9 @@ export default function Footer() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png" 
+              src="https://abpssp.in/wp-content/uploads/2021/10/LOGO1-e1655295576596.png" 
               alt="ABPSSP Logo" 
-              className="h-16 w-16 object-cover rounded-full border-2 border-white p-1 bg-white"
+              className="h-16 w-16 object-cover object-top rounded-full border-2 border-white p-1 bg-white"
               referrerPolicy="no-referrer"
             />
           </div>

@@ -236,19 +236,19 @@ export default function MembersList() {
               <tbody className="bg-white divide-y divide-slate-200">
                 {filteredMembers.map((member) => (
                   <tr key={member.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 whitespace-nowrap font-medium text-slate-900">{member.serviceNo || '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap font-medium text-slate-900">{member.serviceNo ? '***' : '-'}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.rank || '-'}</td>
                     <td className="px-4 py-3 whitespace-nowrap font-medium text-slate-900">{member.name || '-'}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.defenceService || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.dob || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.dateOfRetirement || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.serviceYears || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.ppoNo || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.spouseName || '-'}</td>
-                    <td className="px-4 py-3 min-w-[300px] text-slate-600">{member.address || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.phone || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.aadharNo || '-'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.panNo || '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.dob ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.dateOfRetirement ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.serviceYears ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.ppoNo ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.spouseName ? '***' : '-'}</td>
+                    <td className="px-4 py-3 min-w-[300px] text-slate-600">{member.address ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.phone ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.aadharNo ? '***' : '-'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap text-slate-600">{member.panNo ? '***' : '-'}</td>
                   </tr>
                 ))}
               </tbody>

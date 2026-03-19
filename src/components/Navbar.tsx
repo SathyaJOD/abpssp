@@ -16,7 +16,7 @@ export default function Navbar() {
     { name: 'Contact', path: '/contact' },
     { name: 'Members', path: '/members' },
     { name: 'Status', path: '/status' },
-    { name: 'Admin', path: '/admin' },
+    { name: 'Login', path: '/admin' },
   ];
 
   return (
@@ -62,9 +62,9 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-4">
             <img 
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png" 
+              src="https://abpssp.in/wp-content/uploads/2021/10/LOGO1-e1655295576596.png" 
               alt="ABPSSP Logo" 
-              className="h-16 w-16 object-cover rounded-full border border-slate-200 p-1"
+              className="h-16 w-16 object-cover object-top rounded-full bg-white p-1"
               referrerPolicy="no-referrer"
             />
             <div className="flex flex-col">
