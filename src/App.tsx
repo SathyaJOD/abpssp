@@ -11,6 +11,7 @@ import Gallery from './pages/Gallery';
 import Admin from './pages/Admin';
 import Contact from './pages/Contact';
 import PlaceholderPage from './pages/PlaceholderPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export default function App() {
   return (
@@ -21,7 +22,7 @@ export default function App() {
           <Route path="about" element={<About />} />
           <Route path="objectives" element={<Objectives />} />
           <Route path="leadership" element={<PlaceholderPage title="Leadership" />} />
-          <Route path="privacy" element={<PlaceholderPage title="Privacy Policy" />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="contact" element={<Contact />} />
           <Route path="membership" element={<Membership />} />
           <Route path="members" element={<MembersList />} />

@@ -25,6 +25,9 @@ service cloud.firestore {
     //   - phone: string (required, max 20 chars)
     //   - status: string (required, enum: 'pending', 'active', 'rejected')
     //   - paymentId: string (optional, max 100 chars)
+    //   - applicationId: string (optional, max 100 chars)
+    //   - utrId: string (optional, max 100 chars)
+    //   - screenshotUrl: string (optional, base64 data URL)
     //   - createdAt: timestamp (required)
     //
     // Collection: events
@@ -57,7 +60,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email == "SATYASHALEM456@gmail.com" && request.auth.token.email_verified == true);
+        (request.auth.token.email.lower() == "satyashalem456@gmail.com" && request.auth.token.email_verified == true);
     }
 
     function isValidEmail(email) {
@@ -77,7 +80,7 @@ service cloud.firestore {
     // ===============================================================
 
     function isValidMember(data) {
-      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'createdAt'];
+      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'applicationId', 'utrId', 'screenshotUrl', 'createdAt'];
       return hasOnlyAllowedFields(allowedFields) &&
         data.serviceNo is string && data.serviceNo.size() > 0 && data.serviceNo.size() <= 50 &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
@@ -95,7 +98,10 @@ service cloud.firestore {
         (!('ppoNo' in data) || data.ppoNo == null || (data.ppoNo is string && data.ppoNo.size() <= 50)) &&
         (!('spouseName' in data) || data.spouseName == null || (data.spouseName is string && data.spouseName.size() <= 100)) &&
         (!('address' in data) || data.address == null || (data.address is string && data.address.size() <= 500)) &&
-        (!('paymentId' in data) || data.paymentId == null || (data.paymentId is string && data.paymentId.size() <= 100));
+        (!('paymentId' in data) || data.paymentId == null || (data.paymentId is string && data.paymentId.size() <= 100)) &&
+        (!('applicationId' in data) || data.applicationId == null || (data.applicationId is string && data.applicationId.size() <= 100)) &&
+        (!('utrId' in data) || data.utrId == null || (data.utrId is string && data.utrId.size() <= 100)) &&
+        (!('screenshotUrl' in data) || data.screenshotUrl == null || data.screenshotUrl == "" || (data.screenshotUrl is string && data.screenshotUrl.size() <= 800000));
     }
 
     function isValidEvent(data) {
@@ -123,10 +129,10 @@ service cloud.firestore {
     // ===============================================================
 
     match /members/{memberId} {
-      // Public can create a pending membership application
-      allow create: if isValidMember(request.resource.data) && request.resource.data.status == 'pending';
-      // Public can read active members (for the Members Directory) OR admin can read all
-      allow read: if resource.data.status == 'active' || isAdmin();
+      // Public can create a pending membership application, Admin can create active members
+      allow create: if isValidMember(request.resource.data) && (request.resource.data.status == 'pending' || isAdmin());
+      // Public can read members to check their status by email
+      allow read: if true;
       // Only admin can update or delete members (e.g., approve them)
       allow update: if isAdmin() && isValidMember(request.resource.data);
       allow delete: if isAdmin();
@@ -135,10 +141,10 @@ service cloud.firestore {
     match /ppo_numbers/{ppoNo} {
       // Public can read to check for duplicates
       allow read: if true;
-      // Public can create when submitting an application
-      allow create: if request.resource.data.keys().hasOnly(['memberId', 'createdAt']) &&
+      // Public can create when submitting an application, Admin can create
+      allow create: if isAdmin() || (request.resource.data.keys().hasOnly(['memberId', 'createdAt']) &&
                        request.resource.data.memberId is string &&
-                       request.resource.data.createdAt is timestamp;
+                       request.resource.data.createdAt is timestamp);
       // Only admin can update or delete
       allow update, delete: if isAdmin();
     }

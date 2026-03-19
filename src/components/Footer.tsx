@@ -30,8 +30,6 @@ export default function Footer() {
               <span className="text-white/50">|</span>
               <Link to="/membership" className="hover:text-[#ea580c] transition-colors">Membership</Link>
               <span className="text-white/50">|</span>
-              <Link to="/gallery" className="hover:text-[#ea580c] transition-colors">Gallery</Link>
-              <span className="text-white/50">|</span>
               <Link to="/leadership" className="hover:text-[#ea580c] transition-colors">Leadership</Link>
               <span className="text-white/50">|</span>
               <Link to="/privacy" className="hover:text-[#ea580c] transition-colors">Privacy Policy</Link>

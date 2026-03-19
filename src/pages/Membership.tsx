@@ -9,6 +9,8 @@ export default function Membership() {
   const [error, setError] = useState('');
   const [successId, setSuccessId] = useState('');
   
+  const [utrId, setUtrId] = useState('');
+
   const [formData, setFormData] = useState({
     serviceNo: '',
     rank: '',
@@ -34,7 +36,7 @@ export default function Membership() {
     e.preventDefault();
     
     // Check if any field is empty
-    const emptyFields = Object.entries(formData).filter(([key, value]) => value.trim() === '');
+    const emptyFields = Object.entries(formData).filter(([key, value]) => (value as string).trim() === '');
     
     if (emptyFields.length > 0) {
       setError('All fields are mandatory. Please fill out the entire form.');
@@ -75,6 +77,11 @@ export default function Membership() {
   };
 
   const handlePayment = async () => {
+    if (!utrId.trim()) {
+      setError('Please enter UTR ID.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     
@@ -82,7 +89,7 @@ export default function Membership() {
       // Simulate payment processing delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const mockPaymentId = 'PAY-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+      const applicationId = 'ABPSSP2026-' + Math.floor(10000 + Math.random() * 90000);
       
       const batch = writeBatch(db);
       
@@ -91,7 +98,8 @@ export default function Membership() {
       batch.set(memberRef, {
         ...formData,
         status: 'pending',
-        paymentId: mockPaymentId,
+        applicationId: applicationId,
+        utrId: utrId,
         createdAt: serverTimestamp()
       });
 
@@ -104,7 +112,7 @@ export default function Membership() {
 
       await batch.commit();
       
-      setSuccessId(memberRef.id);
+      setSuccessId(applicationId);
       setStep(3);
     } catch (err: any) {
       console.error('Error submitting application:', err);
@@ -473,13 +481,58 @@ export default function Membership() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg flex items-start gap-3 border border-blue-100">
-                <CreditCard className="h-6 w-6 text-blue-600 shrink-0 mt-0.5" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white p-6 rounded-xl border border-slate-200 text-center shadow-sm">
+                  <h4 className="font-bold text-slate-800 mb-4">Scan QR Code to Pay</h4>
+                  <div className="bg-slate-100 w-48 h-48 mx-auto flex items-center justify-center rounded-lg border-2 border-dashed border-slate-300 mb-4">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=abpssp@sbi&pn=ABPSSP&am=100.00&cu=INR" alt="UPI QR Code" className="w-36 h-36" />
+                  </div>
+                  <p className="text-sm text-slate-500">UPI ID: abpssp@sbi</p>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                  <h4 className="font-bold text-slate-800 mb-4">Bank Details</h4>
+                  <div className="space-y-3 text-sm text-slate-600">
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="font-medium">Bank Name:</span>
+                      <span>State Bank of India</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="font-medium">Account Name:</span>
+                      <span>ABPSSP Andhra Pradesh</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="font-medium">Account No:</span>
+                      <span>31234567890</span>
+                    </div>
+                    <div className="flex justify-between pb-2">
+                      <span className="font-medium">IFSC Code:</span>
+                      <span>SBIN0001234</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <h4 className="font-bold text-slate-800 border-b pb-2">Payment Verification</h4>
+                
+                {error && (
+                  <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+                    {error}
+                  </div>
+                )}
+
                 <div>
-                  <h4 className="text-sm font-medium text-blue-900">Secure Payment Simulation</h4>
-                  <p className="text-sm text-blue-700 mt-1">
-                    This is a preview environment. Clicking "Pay Now" will simulate a successful transaction and submit your application.
-                  </p>
+                  <label htmlFor="utrId" className="block text-sm font-medium text-slate-700">Enter UTR / Transaction ID *</label>
+                  <input
+                    type="text"
+                    id="utrId"
+                    value={utrId}
+                    onChange={(e) => setUtrId(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="e.g. 123456789012"
+                    required
+                  />
                 </div>
               </div>
 
@@ -504,7 +557,7 @@ export default function Membership() {
                       Processing...
                     </>
                   ) : (
-                    'Pay ₹100 Now'
+                    'Submit Application'
                   )}
                 </button>
               </div>
@@ -517,13 +570,18 @@ export default function Membership() {
                 <CheckCircle2 className="h-10 w-10 text-emerald-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-2">Application Submitted!</h3>
-              <p className="text-slate-600 mb-8 max-w-md mx-auto">
+              <p className="text-slate-600 mb-4 max-w-md mx-auto">
                 Thank you for applying for membership. Your application is currently <strong className="text-amber-600">Pending Approval</strong> by the administration.
               </p>
               
+              <div className="bg-blue-50 text-blue-800 p-4 rounded-lg text-sm max-w-md mx-auto mb-8 border border-blue-100">
+                <p className="font-medium mb-1">📩 Notifications Sent</p>
+                <p>An email and SMS have been sent to your registered contact details with your Application ID and current status.</p>
+              </div>
+              
               <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-8 inline-block text-left">
                 <p className="text-sm text-slate-500 mb-1">Your Application ID:</p>
-                <p className="text-lg font-mono font-bold text-slate-900">{successId}</p>
+                <p className="text-xl font-mono font-bold text-slate-900">{successId}</p>
                 <p className="text-xs text-slate-400 mt-2">Please save this ID to check your status later.</p>
               </div>
 

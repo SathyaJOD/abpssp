@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Mail, Phone, Facebook, Twitter, Linkedin, Youtube, ChevronRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -12,7 +12,6 @@ export default function Navbar() {
     { name: 'Objectives', path: '/objectives' },
     { name: 'Events', path: '/events' },
     { name: 'Membership', path: '/membership' },
-    { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
     { name: 'Members', path: '/members' },
     { name: 'Status', path: '/status' },
@@ -21,42 +20,6 @@ export default function Navbar() {
 
   return (
     <header className="w-full font-sans shadow-md z-50 relative">
-      {/* Top Bar */}
-      <div className="bg-[#1e293b] text-white text-xs py-2 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center gap-6 mb-2 sm:mb-0">
-          <a href="mailto:info@abpsspap.org" className="flex items-center gap-2 hover:text-orange-400 transition-colors">
-            <Mail className="h-3.5 w-3.5 text-orange-400" />
-            <span>info@abpsspap.org</span>
-          </a>
-          <a href="tel:0112301512408" className="flex items-center gap-2 hover:text-orange-400 transition-colors">
-            <Phone className="h-3.5 w-3.5 text-orange-400" />
-            <span>011-2301512408</span>
-          </a>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-4 mr-4">
-            <a href="tel:0112301512408" className="flex items-center gap-2 hover:text-orange-400 transition-colors">
-              <Phone className="h-3.5 w-3.5 text-orange-400" />
-              <span>011-2301512408</span>
-            </a>
-            <a href="mailto:info@abpsspap.org" className="flex items-center gap-2 hover:text-orange-400 transition-colors">
-              <Mail className="h-3.5 w-3.5 text-orange-400" />
-              <span>info@abpsspap.org</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-3 border-l border-slate-600 pl-4">
-            <a href="#" className="hover:text-orange-400 transition-colors"><Facebook className="h-3.5 w-3.5" /></a>
-            <a href="#" className="hover:text-orange-400 transition-colors"><Twitter className="h-3.5 w-3.5" /></a>
-            <a href="#" className="hover:text-orange-400 transition-colors"><Linkedin className="h-3.5 w-3.5" /></a>
-            <a href="#" className="hover:text-orange-400 transition-colors"><Youtube className="h-3.5 w-3.5" /></a>
-          </div>
-          <Link to="/membership" className="ml-2 bg-[#2563eb] hover:bg-blue-700 text-white px-3 py-1 rounded-sm flex items-center gap-1 font-medium transition-colors">
-            <span className="w-2 h-2 rounded-full bg-white mr-1"></span>
-            Join ABPSSP <ChevronRight className="h-3 w-3" />
-          </Link>
-        </div>
-      </div>
-
       {/* Main Header */}
       <div className="bg-white py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

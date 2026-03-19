@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Image as ImageIcon, Loader2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Gallery() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -30,6 +31,27 @@ export default function Gallery() {
     fetchGallery();
   }, []);
 
+  const openLightbox = (index: number) => {
+    setSelectedImageIndex(index);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    setSelectedImageIndex(null);
+    document.body.style.overflow = 'auto';
+  };
+
+  const navigateLightbox = (direction: 'next' | 'prev', e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedImageIndex === null) return;
+    
+    if (direction === 'next') {
+      setSelectedImageIndex((selectedImageIndex + 1) % items.length);
+    } else {
+      setSelectedImageIndex((selectedImageIndex - 1 + items.length) % items.length);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -47,8 +69,12 @@ export default function Gallery() {
           </div>
         ) : items.length > 0 ? (
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {items.map((item) => (
-              <div key={item.id} className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300">
+            {items.map((item, index) => (
+              <div 
+                key={item.id} 
+                className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => openLightbox(index)}
+              >
                 <img 
                   src={item.imageUrl} 
                   alt={item.title} 
@@ -72,6 +98,59 @@ export default function Gallery() {
           </div>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      {selectedImageIndex !== null && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4"
+          onClick={closeLightbox}
+        >
+          <button 
+            className="absolute top-6 right-6 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-2 transition-all"
+            onClick={closeLightbox}
+          >
+            <X className="h-8 w-8" />
+          </button>
+
+          {items.length > 1 && (
+            <button 
+              className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-3 transition-all"
+              onClick={(e) => navigateLightbox('prev', e)}
+            >
+              <ChevronLeft className="h-8 w-8" />
+            </button>
+          )}
+
+          <div 
+            className="relative max-w-5xl w-full max-h-[85vh] flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={items[selectedImageIndex].imageUrl} 
+              alt={items[selectedImageIndex].title} 
+              className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+              referrerPolicy="no-referrer"
+            />
+            <div className="mt-6 text-center">
+              <h3 className="text-white font-bold text-xl">{items[selectedImageIndex].title}</h3>
+              {items[selectedImageIndex].date && (
+                <p className="text-emerald-400 mt-1">
+                  {new Date(items[selectedImageIndex].date.toDate()).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {items.length > 1 && (
+            <button 
+              className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full p-3 transition-all"
+              onClick={(e) => navigateLightbox('next', e)}
+            >
+              <ChevronRight className="h-8 w-8" />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
