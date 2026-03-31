@@ -19,6 +19,7 @@
         "spouseName": { "type": "string", "description": "Name of Spouse." },
         "address": { "type": "string", "description": "Residential Address." },
         "phone": { "type": "string", "description": "Mobile Number." },
+        "photoUrl": { "type": "string", "description": "Base64 encoded profile photo." },
         "status": { "type": "string", "enum": ["pending", "active", "rejected"], "description": "Membership status." },
         "paymentId": { "type": "string", "description": "Transaction ID for the membership fee." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Application date." }
@@ -31,13 +32,10 @@
       "type": "object",
       "properties": {
         "title": { "type": "string", "description": "Event title." },
-        "description": { "type": "string", "description": "Event description." },
-        "date": { "type": "string", "format": "date-time", "description": "Date of the event." },
-        "location": { "type": "string", "description": "Event location." },
         "imageUrl": { "type": "string", "description": "URL of the event image." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Creation date." }
       },
-      "required": ["title", "description", "date", "createdAt"]
+      "required": ["title", "imageUrl", "createdAt"]
     },
     "GalleryItem": {
       "title": "Gallery Item",
@@ -46,10 +44,24 @@
       "properties": {
         "title": { "type": "string", "description": "Photo title or caption." },
         "imageUrl": { "type": "string", "description": "URL of the photo." },
-        "date": { "type": "string", "format": "date-time", "description": "Date the photo was taken." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Creation date." }
       },
       "required": ["title", "imageUrl", "createdAt"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global application settings.",
+      "type": "object",
+      "properties": {
+        "qrCodeUrl": { "type": "string", "description": "URL of the payment QR code." },
+        "bankName": { "type": "string", "description": "Name of the bank." },
+        "accountName": { "type": "string", "description": "Name of the account holder." },
+        "accountNo": { "type": "string", "description": "Bank account number." },
+        "ifscCode": { "type": "string", "description": "Bank IFSC code." },
+        "branch": { "type": "string", "description": "Bank branch name." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update date." }
+      },
+      "required": ["qrCodeUrl", "bankName", "accountName", "accountNo", "ifscCode", "branch"]
     }
   },
   "firestore": {
@@ -64,6 +76,10 @@
     "/gallery/{galleryId}": {
       "schema": { "$ref": "#/entities/GalleryItem" },
       "description": "Collection of gallery photos."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/Settings" },
+      "description": "Collection of global application settings."
     }
   }
 }

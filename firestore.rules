@@ -28,15 +28,13 @@ service cloud.firestore {
     //   - applicationId: string (optional, max 100 chars)
     //   - utrId: string (optional, max 100 chars)
     //   - screenshotUrl: string (optional, base64 data URL)
+    //   - photoUrl: string (optional, base64 data URL)
     //   - createdAt: timestamp (required)
     //
     // Collection: events
     // Document ID: auto-generated
     // Fields:
     //   - title: string (required, max 200 chars)
-    //   - description: string (required, max 2000 chars)
-    //   - date: timestamp (required)
-    //   - location: string (optional, max 200 chars)
     //   - imageUrl: string (optional, valid URL)
     //   - createdAt: timestamp (required)
     //
@@ -45,8 +43,18 @@ service cloud.firestore {
     // Fields:
     //   - title: string (required, max 200 chars)
     //   - imageUrl: string (required, valid URL)
-    //   - date: timestamp (optional)
     //   - createdAt: timestamp (required)
+    //
+    // Collection: settings
+    // Document ID: 'payment'
+    // Fields (payment):
+    //   - qrCodeUrl: string (required, valid URL)
+    //   - bankName: string (required, max 100 chars)
+    //   - accountName: string (required, max 100 chars)
+    //   - accountNo: string (required, max 50 chars)
+    //   - ifscCode: string (required, max 20 chars)
+    //   - branch: string (required, max 100 chars)
+    //   - updatedAt: timestamp (required)
     //
     // ===============================================================
 
@@ -80,7 +88,7 @@ service cloud.firestore {
     // ===============================================================
 
     function isValidMember(data) {
-      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'applicationId', 'utrId', 'screenshotUrl', 'createdAt'];
+      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'applicationId', 'utrId', 'screenshotUrl', 'photoUrl', 'createdAt'];
       return hasOnlyAllowedFields(allowedFields) &&
         data.serviceNo is string && data.serviceNo.size() > 0 && data.serviceNo.size() <= 50 &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
@@ -101,27 +109,36 @@ service cloud.firestore {
         (!('paymentId' in data) || data.paymentId == null || (data.paymentId is string && data.paymentId.size() <= 100)) &&
         (!('applicationId' in data) || data.applicationId == null || (data.applicationId is string && data.applicationId.size() <= 100)) &&
         (!('utrId' in data) || data.utrId == null || (data.utrId is string && data.utrId.size() <= 100)) &&
-        (!('screenshotUrl' in data) || data.screenshotUrl == null || data.screenshotUrl == "" || (data.screenshotUrl is string && data.screenshotUrl.size() <= 800000));
+        (!('screenshotUrl' in data) || data.screenshotUrl == null || data.screenshotUrl == "" || (data.screenshotUrl is string && data.screenshotUrl.size() <= 800000)) &&
+        (!('photoUrl' in data) || data.photoUrl == null || data.photoUrl == "" || (data.photoUrl is string && data.photoUrl.size() <= 800000));
     }
 
     function isValidEvent(data) {
-      let allowedFields = ['title', 'description', 'date', 'location', 'imageUrl', 'createdAt'];
+      let allowedFields = ['title', 'imageUrl', 'createdAt'];
       return hasOnlyAllowedFields(allowedFields) &&
         data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
-        data.description is string && data.description.size() > 0 && data.description.size() <= 2000 &&
-        data.date is timestamp &&
         data.createdAt is timestamp &&
-        (!('location' in data) || data.location == null || (data.location is string && data.location.size() <= 200)) &&
         (!('imageUrl' in data) || data.imageUrl == null || data.imageUrl == "" || isValidUrl(data.imageUrl));
     }
 
     function isValidGalleryItem(data) {
-      let allowedFields = ['title', 'imageUrl', 'date', 'createdAt'];
+      let allowedFields = ['title', 'imageUrl', 'createdAt'];
       return hasOnlyAllowedFields(allowedFields) &&
         data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
         data.imageUrl is string && isValidUrl(data.imageUrl) &&
-        data.createdAt is timestamp &&
-        (!('date' in data) || data.date == null || data.date is timestamp);
+        data.createdAt is timestamp;
+    }
+
+    function isValidSettings(data) {
+      let allowedFields = ['qrCodeUrl', 'bankName', 'accountName', 'accountNo', 'ifscCode', 'branch', 'updatedAt'];
+      return hasOnlyAllowedFields(allowedFields) &&
+        data.qrCodeUrl is string && data.qrCodeUrl.size() > 0 && data.qrCodeUrl.size() <= 800000 && (isValidUrl(data.qrCodeUrl) || data.qrCodeUrl.matches("^data:image/.*")) &&
+        data.bankName is string && data.bankName.size() > 0 && data.bankName.size() <= 100 &&
+        data.accountName is string && data.accountName.size() > 0 && data.accountName.size() <= 100 &&
+        data.accountNo is string && data.accountNo.size() > 0 && data.accountNo.size() <= 50 &&
+        data.ifscCode is string && data.ifscCode.size() > 0 && data.ifscCode.size() <= 20 &&
+        data.branch is string && data.branch.size() > 0 && data.branch.size() <= 100 &&
+        data.updatedAt is timestamp;
     }
 
     // ===============================================================
@@ -164,6 +181,16 @@ service cloud.firestore {
       // Only admin can manage gallery
       allow create: if isAdmin() && isValidGalleryItem(request.resource.data);
       allow update: if isAdmin() && isValidGalleryItem(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      // Public can read settings (for payment info, etc.)
+      allow read: if true;
+      // Only admin can manage settings
+      allow create, update: if isAdmin() && (
+        (settingId == 'payment' && isValidSettings(request.resource.data))
+      );
       allow delete: if isAdmin();
     }
   }

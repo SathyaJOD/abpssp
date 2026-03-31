@@ -15,56 +15,11 @@ import {
 
 export default function Objectives() {
   const objectives = [
-    {
-      title: "National Service & Integrity",
-      description: "To promote unity, integrity, and national security by engaging ex-servicemen in activities that strengthen the nation and inspire patriotism among citizens.",
-      icon: <Flag className="h-8 w-8 text-[#ea580c]" />
-    },
-    {
-      title: "Support to Ex-Servicemen & Families",
-      description: "To provide assistance, welfare support, and guidance to ex-servicemen, war widows, and their families, ensuring dignity and security in their lives.",
-      icon: <Users className="h-8 w-8 text-[#1e3a8a]" />
-    },
-    {
-      title: "Healthcare & Social Welfare",
-      description: "To contribute to healthcare, sanitation, and rural development by organizing medical camps, awareness programs, and community service initiatives.",
-      icon: <HeartPulse className="h-8 w-8 text-[#2f5a28]" />
-    },
-    {
-      title: "Education & Youth Development",
-      description: "To guide and motivate youth through training programs, career counseling, and patriotic education, helping them become responsible citizens.",
-      icon: <GraduationCap className="h-8 w-8 text-[#ea580c]" />
-    },
-    {
-      title: "Disaster Relief & Rehabilitation",
-      description: "To actively participate in rescue, relief, and rehabilitation operations during natural calamities and emergencies.",
-      icon: <LifeBuoy className="h-8 w-8 text-[#1e3a8a]" />
-    },
-    {
-      title: "Veteran Welfare & Empowerment",
-      description: "To support rehabilitation, employment opportunities, and skill development programs for veterans, including physically challenged ex-servicemen.",
-      icon: <ShieldCheck className="h-8 w-8 text-[#2f5a28]" />
-    },
-    {
-      title: "Rural & Community Development",
-      description: "To work towards improving rural infrastructure, livelihood opportunities, and social harmony through organized efforts.",
-      icon: <Tractor className="h-8 w-8 text-[#ea580c]" />
-    },
-    {
-      title: "Patriotism & National Events",
-      description: "To celebrate and organize national events such as Kargil Vijay Diwas, Netaji Jayanti, and other patriotic programs to honor the sacrifices of soldiers.",
-      icon: <Calendar className="h-8 w-8 text-[#1e3a8a]" />
-    },
-    {
-      title: "Unity & Brotherhood",
-      description: "To foster a sense of brotherhood, cooperation, and unity among ex-servicemen and society through regular meetings, events, and social initiatives.",
-      icon: <Handshake className="h-8 w-8 text-[#2f5a28]" />
-    },
-    {
-      title: "Legal & Institutional Support",
-      description: "To provide legal guidance and assistance to ex-servicemen and their families whenever required.",
-      icon: <Scale className="h-8 w-8 text-[#ea580c]" />
-    }
+    'To foster a sense of brotherhood and camaraderie among ex-servicemen.',
+    'To work for the welfare and rehabilitation of ex-servicemen and their families.',
+    'To instill a sense of patriotism and national service among the youth.',
+    'To provide a platform for ex-servicemen to contribute to nation-building activities.',
+    'To assist the government and local authorities during national emergencies and natural disasters.'
   ];
 
   return (
@@ -76,7 +31,7 @@ export default function Objectives() {
           <div className="bg-gradient-to-r from-[#2f5a28] to-[#4d8045] py-16 px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-md">Main Objectives of ABPSSP</h1>
             <p className="text-green-100 text-xl max-w-3xl mx-auto leading-relaxed">
-              The <strong>Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP)</strong> is committed to serving the nation and society by utilizing the strength, discipline, and experience of ex-servicemen. The organization works with a clear vision guided by the following core objectives:
+              The <strong>ABPSSP AP STATE (ABPSSP)</strong> is committed to serving the nation and society by utilizing the strength, discipline, and experience of ex-servicemen. The organization works with a clear vision guided by the following core objectives:
             </p>
           </div>
         </div>
@@ -86,11 +41,11 @@ export default function Objectives() {
           {objectives.map((obj, i) => (
             <div key={i} className="bg-white rounded-xl shadow-md p-8 border border-slate-200 hover:shadow-lg transition-shadow flex flex-col">
               <div className="mb-6 bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center border border-slate-100">
-                {obj.icon}
+                <ShieldCheck className="h-8 w-8 text-[#2f5a28]" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">{obj.title}</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Objective {i + 1}</h3>
               <p className="text-slate-600 leading-relaxed flex-1">
-                {obj.description}
+                {obj}
               </p>
             </div>
           ))}

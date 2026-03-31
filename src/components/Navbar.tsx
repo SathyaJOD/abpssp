@@ -15,7 +15,6 @@ export default function Navbar() {
     { name: 'Contact', path: '/contact' },
     { name: 'Members', path: '/members' },
     { name: 'Status', path: '/status' },
-    { name: 'Login', path: '/admin' },
   ];
 
   return (
@@ -31,10 +30,10 @@ export default function Navbar() {
               referrerPolicy="no-referrer"
             />
             <div className="flex flex-col">
-              <h1 className="text-[#1e3a8a] text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-tight">
-                AKHIL BHARATIYA POORVA SAINIK SEVA PARISHAD
+              <h1 className="text-[#1e3a8a] text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-tight uppercase">
+                ABPSSP AP STATE
               </h1>
-              <h2 className="text-[#ea580c] text-lg sm:text-xl font-bold tracking-widest">
+              <h2 className="text-[#ea580c] text-lg sm:text-xl font-bold tracking-widest uppercase">
                 ANDHRA PRADESH
               </h2>
             </div>

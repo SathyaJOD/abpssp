@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
           <Shield className="w-16 h-16 mx-auto mb-4 text-indigo-200" />
           <h1 className="text-3xl font-bold tracking-tight mb-2">Privacy Policy</h1>
           <p className="text-indigo-100 max-w-2xl mx-auto">
-            Welcome to the official website of Akhil Bharatiya Poorva Sainik Seva Parishad – Andhra Pradesh (ABPSSP-AP).
+            Welcome to the official website of ABPSSP AP STATE (ABPSSP).
             We are a registered society under the Andhra Pradesh Societies Registration Act, 2001.
           </p>
         </div>
@@ -176,14 +176,12 @@ export default function PrivacyPolicy() {
               <h2 className="text-xl font-semibold text-slate-900">10. Contact Information</h2>
             </div>
             <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
-              <h3 className="font-semibold text-indigo-900 mb-2">Akhil Bharatiya Poorva Sainik Seva Parishad – Andhra Pradesh</h3>
+              <h3 className="font-semibold text-indigo-900 mb-2">ABPSSP AP STATE</h3>
               <div className="flex items-start gap-3 text-indigo-800 mt-4">
                 <MapPin className="w-5 h-5 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-medium mb-1">Registered Office:</p>
-                  <p>D.No 6-85/1, CBR Academy Building,</p>
-                  <p>Kethanakonda, Ibrahimpatnam (M),</p>
-                  <p>NTR District, Andhra Pradesh – 521456</p>
+                  <p>H.No 1-1-1, Vijayawada, Andhra Pradesh, 520001</p>
                 </div>
               </div>
             </div>

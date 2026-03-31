@@ -16,7 +16,7 @@ export default function Contact() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-[#1e3a8a] mb-4">Contact Us</h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Get in touch with the Akhil Bharatiya Poorva Sainik Seva Parishad - Andhra Pradesh team. We are here to assist our ex-servicemen and their families.
+            Get in touch with the ABPSSP AP STATE (ABPSSP) - Andhra Pradesh team. We are here to assist our ex-servicemen and their families.
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default function Contact() {
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900">Office Location</h3>
                     <p className="mt-1 text-slate-600 leading-relaxed">
-                      Akhil Bharatiya Poorva Sainik Seva Parishad<br />
+                      ABPSSP AP STATE<br />
                       Andhra Pradesh
                     </p>
                   </div>

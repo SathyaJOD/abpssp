@@ -14,6 +14,19 @@ import PlaceholderPage from './pages/PlaceholderPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export default function App() {
+  const hostname = window.location.hostname;
+  const isAdminSubdomain = hostname === 'admin.abpsspandhra.com' || hostname.startsWith('admin.');
+
+  if (isAdminSubdomain) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/*" element={<Admin />} />
+        </Routes>
+      </Router>
+    );
+  }
+
   return (
     <Router>
       <Routes>
@@ -29,7 +42,6 @@ export default function App() {
           <Route path="status" element={<Status />} />
           <Route path="events" element={<Events />} />
           <Route path="gallery" element={<Gallery />} />
-          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </Router>

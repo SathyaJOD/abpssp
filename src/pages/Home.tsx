@@ -14,11 +14,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-              Serving the Nation<br />After Service
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] uppercase">
+              Serving Those Who Served
             </h1>
             <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-medium">
-              Dedicated to the Welfare of<br />Ex-Servicemen & Veeranaris
+              Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP) is dedicated to the welfare of ex-servicemen and their families.
             </p>
             <Link 
               to="/about" 
@@ -52,7 +52,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#1e3a8a] mb-6">About ABPSSP</h2>
             <div className="text-slate-700 text-lg leading-relaxed mb-8 text-justify space-y-4">
               <p>
-                Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP) is an all-India voluntary organization of ex-servicemen. It is apolitical and non-profit oriented, working for national security, community development, and the welfare of ex-servicemen and Veer Naris. The organization brings ex-servicemen together on one platform, promoting discipline, patriotism, and service to the nation under the principle <span className="font-bold text-[#ea580c]">“Nation First Always and Every Time.”</span>
+                ABPSSP AP STATE (ABPSSP) is an all-India voluntary organization of ex-servicemen. It is apolitical and non-profit oriented, working for national security, community development, and the welfare of ex-servicemen and Veer Naris. The organization brings ex-servicemen together on one platform, promoting discipline, patriotism, and service to the nation under the principle <span className="font-bold text-[#ea580c]">“Nation First Always and Every Time.”</span>
               </p>
             </div>
             <Link 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { collection, addDoc, serverTimestamp, doc, writeBatch, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Shield, CreditCard, CheckCircle2, Loader2 } from 'lucide-react';
+import { Shield, CreditCard, CheckCircle2, Loader2, QrCode, Building2, User, Hash, MapPin, Copy, ChevronLeft } from 'lucide-react';
 
 export default function Membership() {
   const [step, setStep] = useState(1);
@@ -10,6 +10,29 @@ export default function Membership() {
   const [successId, setSuccessId] = useState('');
   
   const [utrId, setUtrId] = useState('');
+  const [paymentSettings, setPaymentSettings] = useState({
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=abpssp@sbi&pn=ABPSSP&am=100.00&cu=INR',
+    bankName: 'State Bank of India',
+    accountName: 'ABPSSP Andhra Pradesh',
+    accountNo: '31234567890',
+    ifscCode: 'SBIN0001234',
+    branch: 'Vijayawada Main'
+  });
+
+  React.useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const docRef = doc(db, 'settings', 'payment');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setPaymentSettings(docSnap.data() as any);
+        }
+      } catch (err) {
+        console.error('Error fetching payment settings:', err);
+      }
+    };
+    fetchSettings();
+  }, []);
 
   const [formData, setFormData] = useState({
     serviceNo: '',
@@ -26,6 +49,7 @@ export default function Membership() {
     spouseName: '',
     address: '',
     phone: '',
+    photoUrl: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -148,7 +172,7 @@ export default function Membership() {
                   </h4>
                   <ul className="mt-2 space-y-1 text-sm text-slate-600 ml-6 list-disc">
                     <li><strong>Ex-Servicemen (ESM)</strong> of Army, Navy, Air Force</li>
-                    <li><strong>Their families</strong>, including Wife/Husband, Children, Dependents</li>
+                    <li><strong>Their families</strong>, including Wife/Husband, Dependents</li>
                   </ul>
                   <p className="text-xs text-slate-500 mt-2 ml-6 italic">👉 These are the main eligible members of the organization.</p>
                 </div>
@@ -446,6 +470,39 @@ export default function Membership() {
                     placeholder="Mobile Number"
                   />
                 </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-slate-700">Profile Photo *</label>
+                  <div className="mt-1 flex items-center gap-4">
+                    {formData.photoUrl ? (
+                      <img src={formData.photoUrl} alt="Preview" className="h-12 w-12 rounded-full object-cover border border-slate-200" />
+                    ) : (
+                      <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                        <User className="h-6 w-6 text-slate-400" />
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      required
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        if (file.size > 800000) {
+                          alert('Photo size must be less than 800KB.');
+                          e.target.value = '';
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setFormData({ ...formData, photoUrl: reader.result as string });
+                        };
+                        reader.readAsDataURL(file);
+                      }}
+                      className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="pt-6 border-t border-slate-100 flex justify-end">
@@ -468,98 +525,165 @@ export default function Membership() {
           )}
 
           {step === 2 && (
-            <div className="p-8 space-y-8">
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                <h3 className="text-lg font-medium text-slate-900 mb-4">Membership Fee Summary</h3>
-                <div className="flex justify-between items-center py-3 border-b border-slate-200">
-                  <span className="text-slate-600">Membership Fee</span>
-                  <span className="font-medium text-slate-900">₹ 100.00</span>
-                </div>
-                <div className="flex justify-between items-center py-3">
-                  <span className="text-slate-900 font-bold">Total Amount</span>
-                  <span className="font-bold text-emerald-600 text-xl">₹ 100.00</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white p-6 rounded-xl border border-slate-200 text-center shadow-sm">
-                  <h4 className="font-bold text-slate-800 mb-4">Scan QR Code to Pay</h4>
-                  <div className="bg-slate-100 w-48 h-48 mx-auto flex items-center justify-center rounded-lg border-2 border-dashed border-slate-300 mb-4">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=abpssp@sbi&pn=ABPSSP&am=100.00&cu=INR" alt="UPI QR Code" className="w-36 h-36" />
-                  </div>
-                  <p className="text-sm text-slate-500">UPI ID: abpssp@sbi</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                  <h4 className="font-bold text-slate-800 mb-4">Bank Details</h4>
-                  <div className="space-y-3 text-sm text-slate-600">
-                    <div className="flex justify-between border-b pb-2">
-                      <span className="font-medium">Bank Name:</span>
-                      <span>State Bank of India</span>
-                    </div>
-                    <div className="flex justify-between border-b pb-2">
-                      <span className="font-medium">Account Name:</span>
-                      <span>ABPSSP Andhra Pradesh</span>
-                    </div>
-                    <div className="flex justify-between border-b pb-2">
-                      <span className="font-medium">Account No:</span>
-                      <span>31234567890</span>
-                    </div>
-                    <div className="flex justify-between pb-2">
-                      <span className="font-medium">IFSC Code:</span>
-                      <span>SBIN0001234</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                <h4 className="font-bold text-slate-800 border-b pb-2">Payment Verification</h4>
+            <div className="p-0 space-y-0 bg-white">
+              {/* Premium Header with Gradient */}
+              <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
                 
-                {error && (
-                  <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
-                    {error}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-8">
+                    <div>
+                      <h3 className="text-3xl font-bold tracking-tight mb-2">Membership Payment</h3>
+                      <p className="text-slate-400 text-sm max-w-md">Please complete the one-time membership fee to finalize your application.</p>
+                    </div>
+                    <div className="hidden sm:flex bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20 backdrop-blur-sm">
+                      <CreditCard className="h-10 w-10 text-emerald-400" />
+                    </div>
                   </div>
-                )}
-
-                <div>
-                  <label htmlFor="utrId" className="block text-sm font-medium text-slate-700">Enter UTR / Transaction ID *</label>
-                  <input
-                    type="text"
-                    id="utrId"
-                    value={utrId}
-                    onChange={(e) => setUtrId(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
-                    placeholder="e.g. 123456789012"
-                    required
-                  />
+                  
+                  <div className="inline-flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
+                    <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">Amount Due</div>
+                    <div className="text-4xl font-black text-white">₹ 100.00</div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex justify-between pt-6 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  disabled={loading}
-                  className="inline-flex justify-center py-3 px-6 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={handlePayment}
-                  disabled={loading}
-                  className="inline-flex items-center justify-center py-3 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors disabled:opacity-70"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                      Processing...
-                    </>
-                  ) : (
-                    'Submit Application'
-                  )}
-                </button>
+              <div className="p-8 lg:p-12 space-y-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                  {/* QR Code Section - Modern Card */}
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                    <div className="relative bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center text-center h-full">
+                      <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-8 relative">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-xl border border-slate-700">
+                          Instant UPI
+                        </div>
+                        <img 
+                          src={paymentSettings.qrCodeUrl} 
+                          alt="UPI QR Code" 
+                          className="w-48 h-48 rounded-lg"
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <h4 className="text-xl font-bold text-slate-900 flex items-center justify-center gap-2">
+                          <QrCode className="h-5 w-5 text-emerald-600" />
+                          Scan to Pay
+                        </h4>
+                        <p className="text-sm text-slate-500 leading-relaxed">
+                          Open any UPI app (GPay, PhonePe, Paytm) and scan the code above to pay instantly.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bank Details Section - Modern List */}
+                  <div className="bg-slate-50/50 p-8 rounded-3xl border border-slate-200/60 flex flex-col justify-center">
+                    <h4 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+                      <Building2 className="h-6 w-6 text-emerald-600" />
+                      Direct Bank Transfer
+                    </h4>
+                    
+                    <div className="space-y-6">
+                      {[
+                        { label: 'Account Name', value: paymentSettings.accountName, icon: User },
+                        { label: 'Account Number', value: paymentSettings.accountNo, icon: Hash, copy: true },
+                        { label: 'IFSC Code', value: paymentSettings.ifscCode, icon: Shield, copy: true },
+                        { label: 'Branch', value: paymentSettings.branch, icon: MapPin }
+                      ].map((detail, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:border-emerald-200 transition-colors group">
+                          <div className="flex items-center gap-4">
+                            <div className="p-2.5 bg-slate-50 rounded-xl group-hover:bg-emerald-50 transition-colors">
+                              <detail.icon className="h-5 w-5 text-slate-400 group-hover:text-emerald-600" />
+                            </div>
+                            <div>
+                              <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-0.5">{detail.label}</p>
+                              <p className="text-sm font-bold text-slate-900">{detail.value}</p>
+                            </div>
+                          </div>
+                          {detail.copy && (
+                            <button 
+                              onClick={() => {
+                                navigator.clipboard.writeText(detail.value);
+                                alert(`${detail.label} copied!`);
+                              }}
+                              className="p-2 text-slate-300 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
+                              title={`Copy ${detail.label}`}
+                            >
+                              <Copy className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Verification Section - Guided Input */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-emerald-600/5 rounded-[2rem] -m-4 blur-xl"></div>
+                  <div className="relative bg-white p-8 lg:p-10 rounded-[2rem] border-2 border-emerald-100 shadow-sm">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-emerald-600 text-white p-3 rounded-2xl shadow-lg shadow-emerald-200">
+                          <CheckCircle2 className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-slate-900">Payment Verification</h4>
+                          <p className="text-sm text-slate-500 mt-1">Enter your transaction reference to confirm payment.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 max-w-md w-full">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            id="utrId"
+                            value={utrId}
+                            onChange={(e) => setUtrId(e.target.value)}
+                            className="block w-full rounded-2xl border-slate-200 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-lg font-mono p-5 pl-6 border bg-slate-50/50 placeholder:text-slate-300"
+                            placeholder="Enter UTR / Transaction ID"
+                            required
+                          />
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 uppercase tracking-widest pointer-events-none">Required</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 flex items-center gap-2 text-xs text-slate-400 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                      <Shield className="h-3 w-3" />
+                      <span>Your application status will be updated once our team verifies the transaction (usually within 24-48 hours).</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    disabled={loading}
+                    className="order-2 sm:order-1 flex items-center gap-2 text-slate-400 hover:text-slate-900 font-bold text-sm uppercase tracking-widest transition-colors"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Back to Details
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handlePayment}
+                    disabled={loading}
+                    className="order-1 sm:order-2 w-full sm:w-auto inline-flex items-center justify-center py-5 px-12 border border-transparent shadow-2xl shadow-emerald-200 text-sm font-black rounded-2xl text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 uppercase tracking-widest"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5" />
+                        Processing...
+                      </>
+                    ) : (
+                      'Submit Application'
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -569,9 +693,9 @@ export default function Membership() {
               <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-emerald-100 mb-6">
                 <CheckCircle2 className="h-10 w-10 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Application Submitted!</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Application Submitted to ABPSSP!</h3>
               <p className="text-slate-600 mb-4 max-w-md mx-auto">
-                Thank you for applying for membership. Your application is currently <strong className="text-amber-600">Pending Approval</strong> by the administration.
+                Thank you for applying for membership with ABPSSP AP STATE. Your application is currently <strong className="text-amber-600">Pending Approval</strong> by the administration.
               </p>
               
               <div className="bg-blue-50 text-blue-800 p-4 rounded-lg text-sm max-w-md mx-auto mb-8 border border-blue-100">

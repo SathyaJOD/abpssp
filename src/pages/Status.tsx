@@ -43,7 +43,7 @@ export default function Status() {
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-extrabold text-slate-900">Check Membership Status</h2>
+          <h2 className="text-3xl font-extrabold text-slate-900">ABPSSP Membership Status</h2>
           <p className="mt-4 text-lg text-slate-600">
             Enter your Email ID to check your membership approval status.
           </p>
@@ -116,10 +116,38 @@ export default function Status() {
                   </div>
                 </div>
 
+                {result.applicationId && (
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-sm font-medium text-slate-500">Application ID</div>
+                    <div className="col-span-2 text-sm font-mono text-slate-900">{result.applicationId}</div>
+                  </div>
+                )}
+
                 {result.serviceNo && (
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-sm font-medium text-slate-500">Service No.</div>
                     <div className="col-span-2 text-sm text-slate-900">{result.serviceNo}</div>
+                  </div>
+                )}
+
+                {result.rank && (
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-sm font-medium text-slate-500">Rank</div>
+                    <div className="col-span-2 text-sm text-slate-900">{result.rank}</div>
+                  </div>
+                )}
+
+                {result.ppoNo && (
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-sm font-medium text-slate-500">PPO Number</div>
+                    <div className="col-span-2 text-sm font-mono text-slate-900">{result.ppoNo}</div>
+                  </div>
+                )}
+
+                {result.defenceService && (
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-sm font-medium text-slate-500">Service</div>
+                    <div className="col-span-2 text-sm text-slate-900">{result.defenceService}</div>
                   </div>
                 )}
               </div>

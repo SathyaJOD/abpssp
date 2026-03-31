@@ -35,16 +35,16 @@ export default function Footer() {
               <Link to="/privacy" className="hover:text-[#ea580c] transition-colors">Privacy Policy</Link>
             </div>
             <p className="text-xs text-white/70">
-              &copy; {new Date().getFullYear()} ABPSSP - Akhil Bharatiya Poorva Sainik Seva Parishad Andhra Pradesh. All rights reserved.
+              &copy; {new Date().getFullYear()} ABPSSP - ABPSSP AP STATE Andhra Pradesh. All rights reserved.
             </p>
           </div>
 
           {/* Social Icons */}
           <div className="flex items-center gap-3">
-            <a href="#" className="bg-[#3b5998] p-2 rounded-full hover:bg-white hover:text-[#3b5998] transition-colors">
+            <a href="#" target="_blank" rel="noopener noreferrer" className="bg-[#3b5998] p-2 rounded-full hover:bg-white hover:text-[#3b5998] transition-colors">
               <Facebook className="h-4 w-4" />
             </a>
-            <a href="#" className="bg-[#1da1f2] p-2 rounded-full hover:bg-white hover:text-[#1da1f2] transition-colors">
+            <a href="#" target="_blank" rel="noopener noreferrer" className="bg-[#1da1f2] p-2 rounded-full hover:bg-white hover:text-[#1da1f2] transition-colors">
               <Twitter className="h-4 w-4" />
             </a>
             <a href="mailto:info@abpsspap.org" className="bg-[#ea4335] p-2 rounded-full hover:bg-white hover:text-[#ea4335] transition-colors">

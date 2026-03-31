@@ -9,7 +9,7 @@ export default function About() {
           <div className="bg-gradient-to-r from-[#1e3a8a] to-[#2563eb] py-12 px-8 text-center">
             <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-md">About ABPSSP-AP</h1>
             <p className="text-blue-100 text-lg max-w-2xl mx-auto">
-              Akhil Bharatiya Poorva Sainik Seva Parishad – Andhra Pradesh
+              ABPSSP AP STATE – Andhra Pradesh
             </p>
           </div>
           
@@ -18,10 +18,10 @@ export default function About() {
             {/* Intro */}
             <div className="prose prose-lg max-w-none text-slate-700">
               <p className="text-xl font-medium text-slate-800 leading-relaxed mb-6">
-                <strong>Akhil Bharatiya Poorva Sainik Seva Parishad – Andhra Pradesh (ABPSSP-AP)</strong> is a registered organization of ex-servicemen dedicated to serving society, supporting veterans, and contributing to nation-building.
+                <strong>ABPSSP AP STATE – Andhra Pradesh (ABPSSP-AP)</strong> is a registered organization of ex-servicemen dedicated to serving society, supporting veterans, and contributing to nation-building.
               </p>
               <p className="text-lg leading-relaxed">
-                Established with the vision of unity, service, and patriotism, ABPSSP works as a platform for retired Armed Forces personnel (Army, Navy, and Air Force) to continue their service to the nation even after retirement.
+                Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP) is a non-political, non-profit organization dedicated to the welfare of ex-servicemen, their families, and the society at large. Our Andhra Pradesh state chapter works tirelessly to ensure that those who served our nation receive the respect, support, and opportunities they deserve after retirement.
               </p>
             </div>
 

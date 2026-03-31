@@ -57,7 +57,7 @@ export default function Gallery() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <ImageIcon className="mx-auto h-12 w-12 text-emerald-600 mb-4" />
-          <h2 className="text-3xl font-extrabold text-slate-900">Photo Gallery</h2>
+          <h2 className="text-3xl font-extrabold text-slate-900">ABPSSP Photo Gallery</h2>
           <p className="mt-4 text-lg text-slate-600">
             A visual journey of our events, activities, and community.
           </p>
@@ -83,11 +83,6 @@ export default function Gallery() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                   <h3 className="text-white font-bold text-lg mb-1">{item.title}</h3>
-                  {item.date && (
-                    <p className="text-emerald-300 text-sm font-medium">
-                      {new Date(item.date.toDate()).toLocaleDateString()}
-                    </p>
-                  )}
                 </div>
               </div>
             ))}
@@ -133,11 +128,6 @@ export default function Gallery() {
             />
             <div className="mt-6 text-center">
               <h3 className="text-white font-bold text-xl">{items[selectedImageIndex].title}</h3>
-              {items[selectedImageIndex].date && (
-                <p className="text-emerald-400 mt-1">
-                  {new Date(items[selectedImageIndex].date.toDate()).toLocaleDateString()}
-                </p>
-              )}
             </div>
           </div>
 

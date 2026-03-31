@@ -3,7 +3,6 @@ import { collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import { 
   Calendar, 
-  MapPin, 
   Loader2, 
   CheckCircle,
   Flag,
@@ -15,7 +14,6 @@ import {
   Users,
   Star
 } from 'lucide-react';
-import { format } from 'date-fns';
 
 export default function Events() {
   const [events, setEvents] = useState<any[]>([]);
@@ -102,7 +100,7 @@ export default function Events() {
       try {
         const q = query(
           collection(db, 'events'),
-          orderBy('date', 'desc')
+          orderBy('createdAt', 'desc')
         );
         const querySnapshot = await getDocs(q);
         const eventsData = querySnapshot.docs.map(doc => ({
@@ -127,7 +125,7 @@ export default function Events() {
           <Calendar className="mx-auto h-12 w-12 text-[#1e3a8a] mb-4" />
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Activities & Initiatives</h2>
           <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-            The <strong>Akhil Bharatiya Poorva Sainik Seva Parishad (ABPSSP)</strong> actively organizes a wide range of events and programs aimed at serving society, supporting veterans, and promoting patriotism.
+            The <strong>ABPSSP AP STATE (ABPSSP)</strong> actively organizes a wide range of events and programs aimed at serving society, supporting veterans, and promoting patriotism.
           </p>
         </div>
 
@@ -172,30 +170,13 @@ export default function Events() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.map((event) => (
               <div key={event.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300 flex flex-col">
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-slate-900 line-clamp-2 pr-4">{event.title}</h3>
-                    <div className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-lg text-sm font-semibold whitespace-nowrap">
-                      {event.date ? format(event.date.toDate(), 'MMM dd, yyyy') : 'TBA'}
-                    </div>
+                {event.imageUrl && (
+                  <div className="h-48 w-full">
+                    <img src={event.imageUrl} alt={event.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </div>
-                  
-                  {event.location && (
-                    <div className="flex items-start gap-2 text-slate-500 text-sm mb-4">
-                      <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
-                      <span className="line-clamp-2">{event.location}</span>
-                    </div>
-                  )}
-                  
-                  <p className="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
-                    {event.description}
-                  </p>
-                  
-                  <div className="pt-4 border-t border-slate-100 mt-auto">
-                    <button className="text-emerald-600 font-medium text-sm hover:text-emerald-700 transition-colors flex items-center gap-1">
-                      Read More
-                    </button>
-                  </div>
+                )}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900">{event.title}</h3>
                 </div>
               </div>
             ))}
