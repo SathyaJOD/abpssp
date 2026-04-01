@@ -155,20 +155,26 @@ export default function Admin() {
     const html = `
       <html>
         <head>
-          <title>Member Application - ${member.name}</title>
+          <title>Membership Application - ${member.name}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
-            .header { text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
-            h1 { color: #10b981; margin: 10px 0 5px 0; font-size: 24px; }
-            h2 { color: #475569; font-size: 18px; margin-top: 0; }
-            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-            .field { margin-bottom: 15px; }
-            .label { font-weight: bold; color: #64748b; font-size: 12px; text-transform: uppercase; }
-            .value { font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; min-height: 24px; }
-            .photo { width: 150px; height: 150px; object-fit: cover; border: 1px solid #cbd5e1; border-radius: 8px; }
-            .photo-container { text-align: right; }
-            .section-title { background: #f1f5f9; padding: 10px; font-weight: bold; margin: 30px 0 15px 0; border-left: 4px solid #10b981; }
-            .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+            body { font-family: 'Times New Roman', Times, serif; padding: 40px; line-height: 1.6; color: #000; font-size: 14px; }
+            .right-align { text-align: right; font-weight: bold; }
+            .center-align { text-align: center; }
+            .title { font-size: 20px; font-weight: bold; margin: 10px 0; }
+            .sub-title { font-size: 16px; text-decoration: underline; font-weight: bold; margin: 15px 0; }
+            .part { font-size: 16px; font-weight: bold; margin: 10px 0 0 0; }
+            .row { margin-bottom: 10px; display: flex; flex-wrap: wrap; }
+            .item { margin-right: 20px; }
+            .val { border-bottom: 1px dashed #000; padding: 0 10px; min-width: 100px; display: inline-block; font-weight: bold; }
+            .indent { margin-left: 20px; }
+            .signature { margin-top: 50px; text-align: right; font-weight: bold; }
+            .header-container { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+            .logo-container { width: 120px; }
+            .logo { width: 100px; height: 100px; object-fit: contain; }
+            .header-text { flex: 1; padding: 0 20px; }
+            .photo-container { width: 120px; display: flex; justify-content: flex-end; padding-top: 35px; }
+            .photo { width: 110px; height: 140px; object-fit: cover; border: 1px solid #000; }
+            .photo-placeholder { width: 115px; height: 145px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #000; }
             @media print {
               body { padding: 0; }
               button { display: none; }
@@ -176,75 +182,70 @@ export default function Admin() {
           </style>
         </head>
         <body>
-          <div class="header">
-            <h1>ABPSSP Andhra Pradesh</h1>
-            <h2>Member Application Form</h2>
-            <p style="color: #64748b; font-size: 14px;">Application ID: ${member.applicationId || member.id}</p>
-          </div>
+          <div class="right-align" style="margin-bottom: 10px;">Appendix 'A' (To the Bye Laws)</div>
           
-          <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
-            <div style="flex: 1; padding-right: 20px;">
-              <div class="field"><div class="label">Full Name</div><div class="value" style="font-size: 20px; font-weight: bold;">${member.name || '-'}</div></div>
-              <div class="field"><div class="label">Status</div><div class="value" style="color: ${member.status === 'active' ? '#10b981' : member.status === 'rejected' ? '#ef4444' : '#f59e0b'}; text-transform: uppercase; font-weight: bold;">${member.status || '-'}</div></div>
+          <div class="header-container">
+            <div class="logo-container">
+              <img src="https://abpssp.in/wp-content/uploads/2021/10/LOGO1-e1655295576596.png" alt="ABPSSP Logo" class="logo" />
+            </div>
+            <div class="center-align header-text">
+              <div class="title">Akhil Bharatiya Poorva Sainik Seva Parishad<br/>Andhra Pradesh</div>
+              <div>E-mail: abpssap01@gmail.com</div>
+              <div class="sub-title">Membership Application Form</div>
+              <div class="part">PART - I</div>
             </div>
             <div class="photo-container">
-              ${member.photoUrl ? `<img src="${member.photoUrl}" class="photo" alt="Member Photo" />` : '<div class="photo" style="display:flex; align-items:center; justify-content:center; background:#f8fafc; color:#94a3b8;">No Photo</div>'}
+              <div class="photo-placeholder">PHOTO</div>
             </div>
           </div>
-
-          <div class="section-title">Personal Information</div>
-          <div class="grid">
-            <div class="field"><div class="label">Phone Number</div><div class="value">${member.phone || '-'}</div></div>
-            <div class="field"><div class="label">Email Address</div><div class="value">${member.email || '-'}</div></div>
-            <div class="field"><div class="label">Date of Birth</div><div class="value">${member.dob || '-'}</div></div>
-            <div class="field"><div class="label">Spouse Name</div><div class="value">${member.spouseName || '-'}</div></div>
-            <div class="field"><div class="label">Aadhar Number</div><div class="value">${member.aadharNo || '-'}</div></div>
-            <div class="field"><div class="label">PAN Number</div><div class="value">${member.panNo || '-'}</div></div>
+          
+          <div class="row">1. Membership No: <span class="val">${member.applicationId || member.id || ''}</span></div>
+          <div class="row">2. Membership Fee: <span class="val">Rs. 100/-</span></div>
+          <div class="row">3. Donation Rs: <span class="val">${member.donation || ''}</span></div>
+          <div class="row">
+            <span class="item">4. Service No: <span class="val">${member.serviceNo || ''}</span></span>
+            <span class="item">Rank: <span class="val">${member.rank || ''}</span></span>
+            <span class="item">Name: <span class="val">${member.name || ''}</span></span>
           </div>
-
-          <div class="section-title">Service Details</div>
-          <div class="grid">
-            <div class="field"><div class="label">Defence Service</div><div class="value">${member.defenceService || '-'}</div></div>
-            <div class="field"><div class="label">Arm/Service</div><div class="value">${member.armService || '-'}</div></div>
-            <div class="field"><div class="label">Rank</div><div class="value">${member.rank || '-'}</div></div>
-            <div class="field"><div class="label">Service Number</div><div class="value">${member.serviceNo || '-'}</div></div>
-            <div class="field"><div class="label">Service Years</div><div class="value">${member.serviceYears || '-'}</div></div>
-            <div class="field"><div class="label">Date of Retirement</div><div class="value">${member.dateOfRetirement || '-'}</div></div>
-            <div class="field"><div class="label">PPO Number</div><div class="value">${member.ppoNo || '-'}</div></div>
-            <div class="field"><div class="label">Basic Pension</div><div class="value">${member.basicPension || '-'}</div></div>
-            <div class="field" style="grid-column: span 2;"><div class="label">Decorations</div><div class="value">${member.decorations || '-'}</div></div>
+          <div class="row">5. Name of Spouse / Next of kin: <span class="val">${member.spouseName || ''}</span></div>
+          <div class="row">6. Wing of the Defence Services: <span class="val">${member.defenceService || ''}</span></div>
+          <div class="row">
+            <span class="item">7. A) Arm/Service: <span class="val">${member.armService || ''}</span></span>
+            <span class="item">B) Branch: <span class="val">${member.branch || ''}</span></span>
           </div>
-
-          <div class="section-title">Contact & Other Details</div>
-          <div class="grid">
-            <div class="field" style="grid-column: span 2;"><div class="label">Present Address</div><div class="value">${member.address || '-'}</div></div>
-            <div class="field" style="grid-column: span 2;"><div class="label">Permanent Address</div><div class="value">${member.permanentAddress || '-'}</div></div>
-            <div class="field"><div class="label">Landline</div><div class="value">${member.landline || '-'}</div></div>
-            <div class="field"><div class="label">Present Occupation</div><div class="value">${member.occupation || '-'}</div></div>
-            <div class="field" style="grid-column: span 2;"><div class="label">Other Information</div><div class="value">${member.otherInfo || '-'}</div></div>
+          <div class="row indent">C) Decorations (if any): <span class="val">${member.decorations || ''}</span></div>
+          <div class="row">
+            <span class="item">8. A) Date of Retirement/Release: <span class="val">${member.dateOfRetirement || ''}</span></span>
+            <span class="item">Total Service: <span class="val">${member.serviceYears || ''}</span></span>
           </div>
-
-          <div class="section-title">Payment Information</div>
-          <div class="grid">
-            <div class="field"><div class="label">UTR / Reference ID</div><div class="value">${member.utrId || '-'}</div></div>
-            <div class="field"><div class="label">Donation Amount</div><div class="value">${member.donation || '-'}</div></div>
-            <div class="field" style="grid-column: span 2;">
-              <div class="label">Payment Screenshot</div>
-              <div style="margin-top: 10px;">
-                ${member.screenshotUrl ? `<img src="${member.screenshotUrl}" style="max-width: 300px; border: 1px solid #cbd5e1; border-radius: 8px;" alt="Payment Screenshot" />` : 'No screenshot provided'}
-              </div>
-            </div>
+          <div class="row indent">(As per PPO / Discharge Certificate)</div>
+          <div class="row indent">B) Date of Birth: <span class="val">${member.dob || ''}</span></div>
+          <div class="row">9. Amount of Basic Pension Rs <span class="val">${member.basicPension || ''}</span> pm as per PPO</div>
+          <div class="row indent">PPO No: <span class="val">${member.ppoNo || ''}</span></div>
+          <div class="row">10. Aadhaar Card No: <span class="val">${member.aadharNo || ''}</span></div>
+          <div class="row">11. PAN Card No (if issued): <span class="val">${member.panNo || ''}</span></div>
+          <div class="row">12. A) Permanent Address: <span class="val">${member.permanentAddress || ''}</span></div>
+          <div class="row indent">B) Current/Correspondence Address: <span class="val">${member.address || ''}</span></div>
+          <div class="row indent">
+            <span class="item">C) Land Line No. with STD Code <span class="val">${member.landline || ''}</span></span>
+            <span class="item">Mobile No: <span class="val">${member.phone || ''}</span></span>
           </div>
-
-          <div class="footer">
-            Generated on ${new Date().toLocaleString()} from ABPSSP Admin Dashboard
-          </div>
+          <div class="row indent">D) Email ID: <span class="val">${member.email || ''}</span></div>
+          <div class="row">13. Occupation (Post Retirement), if any <span class="val">${member.occupation || ''}</span></div>
+          <div class="row indent">(Designation and Name of the organisation in which employed and its address)</div>
+          <div class="row">14. Any other info you want to share: <span class="val">${member.otherInfo || ''}</span></div>
+          
+          <div class="signature">Signature of the Applicant</div>
           
           <script>
             window.onload = function() {
-              setTimeout(function() {
-                window.print();
-              }, 500);
+              var logo = document.querySelector('.logo');
+              if (logo && !logo.complete) {
+                logo.onload = function() { setTimeout(function() { window.print(); }, 500); };
+                logo.onerror = function() { setTimeout(function() { window.print(); }, 500); };
+              } else {
+                setTimeout(function() { window.print(); }, 500);
+              }
             }
           </script>
         </body>
