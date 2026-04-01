@@ -156,6 +156,116 @@ export default function Membership() {
     }
   };
 
+  const printMemberForm = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('Please allow popups to print the form.');
+      return;
+    }
+
+    const html = `
+      <html>
+        <head>
+          <title>Member Application - ${formData.name}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; color: #333; }
+            .header { text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
+            h1 { color: #10b981; margin: 10px 0 5px 0; font-size: 24px; }
+            h2 { color: #475569; font-size: 18px; margin-top: 0; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            .field { margin-bottom: 15px; }
+            .label { font-weight: bold; color: #64748b; font-size: 12px; text-transform: uppercase; }
+            .value { font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; min-height: 24px; }
+            .photo { width: 150px; height: 150px; object-fit: cover; border: 1px solid #cbd5e1; border-radius: 8px; }
+            .photo-container { text-align: right; }
+            .section-title { background: #f1f5f9; padding: 10px; font-weight: bold; margin: 30px 0 15px 0; border-left: 4px solid #10b981; }
+            .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+            @media print {
+              body { padding: 0; }
+              button { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>ABPSSP Andhra Pradesh</h1>
+            <h2>Member Application Form</h2>
+            <p style="color: #64748b; font-size: 14px;">Application ID: ${successId}</p>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+            <div style="flex: 1; padding-right: 20px;">
+              <div class="field"><div class="label">Full Name</div><div class="value" style="font-size: 20px; font-weight: bold;">${formData.name || '-'}</div></div>
+              <div class="field"><div class="label">Status</div><div class="value" style="color: #f59e0b; text-transform: uppercase; font-weight: bold;">PENDING</div></div>
+            </div>
+            <div class="photo-container">
+              ${formData.photoUrl ? `<img src="${formData.photoUrl}" class="photo" alt="Member Photo" />` : '<div class="photo" style="display:flex; align-items:center; justify-content:center; background:#f8fafc; color:#94a3b8;">No Photo</div>'}
+            </div>
+          </div>
+
+          <div class="section-title">Personal Information</div>
+          <div class="grid">
+            <div class="field"><div class="label">Phone Number</div><div class="value">${formData.phone || '-'}</div></div>
+            <div class="field"><div class="label">Email Address</div><div class="value">${formData.email || '-'}</div></div>
+            <div class="field"><div class="label">Date of Birth</div><div class="value">${formData.dob || '-'}</div></div>
+            <div class="field"><div class="label">Spouse Name</div><div class="value">${formData.spouseName || '-'}</div></div>
+            <div class="field"><div class="label">Aadhar Number</div><div class="value">${formData.aadharNo || '-'}</div></div>
+            <div class="field"><div class="label">PAN Number</div><div class="value">${formData.panNo || '-'}</div></div>
+          </div>
+
+          <div class="section-title">Service Details</div>
+          <div class="grid">
+            <div class="field"><div class="label">Defence Service</div><div class="value">${formData.defenceService || '-'}</div></div>
+            <div class="field"><div class="label">Arm/Service</div><div class="value">${formData.armService || '-'}</div></div>
+            <div class="field"><div class="label">Rank</div><div class="value">${formData.rank || '-'}</div></div>
+            <div class="field"><div class="label">Service Number</div><div class="value">${formData.serviceNo || '-'}</div></div>
+            <div class="field"><div class="label">Service Years</div><div class="value">${formData.serviceYears || '-'}</div></div>
+            <div class="field"><div class="label">Date of Retirement</div><div class="value">${formData.dateOfRetirement || '-'}</div></div>
+            <div class="field"><div class="label">PPO Number</div><div class="value">${formData.ppoNo || '-'}</div></div>
+            <div class="field"><div class="label">Basic Pension</div><div class="value">${formData.basicPension || '-'}</div></div>
+            <div class="field" style="grid-column: span 2;"><div class="label">Decorations</div><div class="value">${formData.decorations || '-'}</div></div>
+          </div>
+
+          <div class="section-title">Contact & Other Details</div>
+          <div class="grid">
+            <div class="field" style="grid-column: span 2;"><div class="label">Present Address</div><div class="value">${formData.address || '-'}</div></div>
+            <div class="field" style="grid-column: span 2;"><div class="label">Permanent Address</div><div class="value">${formData.permanentAddress || '-'}</div></div>
+            <div class="field"><div class="label">Landline</div><div class="value">${formData.landline || '-'}</div></div>
+            <div class="field"><div class="label">Present Occupation</div><div class="value">${formData.occupation || '-'}</div></div>
+            <div class="field" style="grid-column: span 2;"><div class="label">Other Information</div><div class="value">${formData.otherInfo || '-'}</div></div>
+          </div>
+
+          <div class="section-title">Payment Information</div>
+          <div class="grid">
+            <div class="field"><div class="label">UTR / Reference ID</div><div class="value">${utrId || '-'}</div></div>
+            <div class="field"><div class="label">Donation Amount</div><div class="value">${formData.donation || '-'}</div></div>
+            <div class="field" style="grid-column: span 2;">
+              <div class="label">Payment Screenshot</div>
+              <div style="margin-top: 10px;">
+                ${formData.screenshotUrl ? `<img src="${formData.screenshotUrl}" style="max-width: 300px; border: 1px solid #cbd5e1; border-radius: 8px;" alt="Payment Screenshot" />` : 'No screenshot provided'}
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">
+            Generated on ${new Date().toLocaleString()} from ABPSSP Membership Portal
+          </div>
+          
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 500);
+            }
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -836,6 +946,13 @@ export default function Membership() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button
+                  onClick={printMemberForm}
+                  className="inline-flex justify-center items-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                >
+                  <Printer className="h-5 w-5 mr-2" />
+                  Download Application
+                </button>
                 <button
                   onClick={() => window.location.href = '/status'}
                   className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-900 hover:bg-slate-800 transition-colors"
