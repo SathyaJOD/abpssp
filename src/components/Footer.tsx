@@ -47,7 +47,7 @@ export default function Footer() {
             <a href="#" target="_blank" rel="noopener noreferrer" className="bg-[#1da1f2] p-2 rounded-full hover:bg-white hover:text-[#1da1f2] transition-colors">
               <Twitter className="h-4 w-4" />
             </a>
-            <a href="mailto:info@abpsspap.org" className="bg-[#ea4335] p-2 rounded-full hover:bg-white hover:text-[#ea4335] transition-colors">
+            <a href="mailto:abpsspap01@gmail.com" className="bg-[#ea4335] p-2 rounded-full hover:bg-white hover:text-[#ea4335] transition-colors">
               <Mail className="h-4 w-4" />
             </a>
           </div>

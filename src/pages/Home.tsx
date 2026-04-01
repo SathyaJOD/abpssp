@@ -275,7 +275,7 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-3 mt-4 pt-4 border-t border-[#d5e0c5]">
                 <Mail className="h-5 w-5 text-[#ea580c] shrink-0" />
-                <a href="mailto:info@abpsspap.org" className="text-slate-800 font-medium hover:text-[#ea580c]">info@abpsspap.org</a>
+                <a href="mailto:abpsspap01@gmail.com" className="text-slate-800 font-medium hover:text-[#ea580c]">abpsspap01@gmail.com</a>
               </li>
             </ul>
             <Link 

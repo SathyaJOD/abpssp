@@ -30,6 +30,15 @@ service cloud.firestore {
     //   - screenshotUrl: string (optional, base64 data URL)
     //   - photoUrl: string (optional, base64 data URL)
     //   - createdAt: timestamp (required)
+    //   - donation: string (optional, max 50 chars)
+    //   - armService: string (optional, max 100 chars)
+    //   - branch: string (optional, max 100 chars)
+    //   - decorations: string (optional, max 200 chars)
+    //   - basicPension: string (optional, max 50 chars)
+    //   - permanentAddress: string (optional, max 500 chars)
+    //   - landline: string (optional, max 50 chars)
+    //   - occupation: string (optional, max 500 chars)
+    //   - otherInfo: string (optional, max 1000 chars)
     //
     // Collection: events
     // Document ID: auto-generated
@@ -68,7 +77,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (request.auth.token.email.lower() == "satyashalem456@gmail.com" && request.auth.token.email_verified == true);
+        (request.auth.token.email.lower() == "abpsspap01@gmail.com" && request.auth.token.email_verified == true);
     }
 
     function isValidEmail(email) {
@@ -88,7 +97,7 @@ service cloud.firestore {
     // ===============================================================
 
     function isValidMember(data) {
-      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'applicationId', 'utrId', 'screenshotUrl', 'photoUrl', 'createdAt'];
+      let allowedFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'panNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'status', 'paymentId', 'applicationId', 'utrId', 'screenshotUrl', 'photoUrl', 'createdAt', 'donation', 'armService', 'branch', 'decorations', 'basicPension', 'permanentAddress', 'landline', 'occupation', 'otherInfo'];
       return hasOnlyAllowedFields(allowedFields) &&
         data.serviceNo is string && data.serviceNo.size() > 0 && data.serviceNo.size() <= 50 &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
@@ -110,7 +119,16 @@ service cloud.firestore {
         (!('applicationId' in data) || data.applicationId == null || (data.applicationId is string && data.applicationId.size() <= 100)) &&
         (!('utrId' in data) || data.utrId == null || (data.utrId is string && data.utrId.size() <= 100)) &&
         (!('screenshotUrl' in data) || data.screenshotUrl == null || data.screenshotUrl == "" || (data.screenshotUrl is string && data.screenshotUrl.size() <= 800000)) &&
-        (!('photoUrl' in data) || data.photoUrl == null || data.photoUrl == "" || (data.photoUrl is string && data.photoUrl.size() <= 800000));
+        (!('photoUrl' in data) || data.photoUrl == null || data.photoUrl == "" || (data.photoUrl is string && data.photoUrl.size() <= 800000)) &&
+        (!('donation' in data) || data.donation == null || (data.donation is string && data.donation.size() <= 50)) &&
+        (!('armService' in data) || data.armService == null || (data.armService is string && data.armService.size() <= 100)) &&
+        (!('branch' in data) || data.branch == null || (data.branch is string && data.branch.size() <= 100)) &&
+        (!('decorations' in data) || data.decorations == null || (data.decorations is string && data.decorations.size() <= 200)) &&
+        (!('basicPension' in data) || data.basicPension == null || (data.basicPension is string && data.basicPension.size() <= 50)) &&
+        (!('permanentAddress' in data) || data.permanentAddress == null || (data.permanentAddress is string && data.permanentAddress.size() <= 500)) &&
+        (!('landline' in data) || data.landline == null || (data.landline is string && data.landline.size() <= 50)) &&
+        (!('occupation' in data) || data.occupation == null || (data.occupation is string && data.occupation.size() <= 500)) &&
+        (!('otherInfo' in data) || data.otherInfo == null || (data.otherInfo is string && data.otherInfo.size() <= 1000));
     }
 
     function isValidEvent(data) {

@@ -56,8 +56,8 @@ export default function Contact() {
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900">Email Us</h3>
                     <p className="mt-1 text-slate-600">
-                      <a href="mailto:info@abpsspap.org" className="hover:text-[#ea580c] transition-colors font-medium">
-                        info@abpsspap.org
+                      <a href="mailto:abpsspap01@gmail.com" className="hover:text-[#ea580c] transition-colors font-medium">
+                        abpsspap01@gmail.com
                       </a>
                     </p>
                   </div>

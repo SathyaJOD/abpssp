@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { collection, addDoc, serverTimestamp, doc, writeBatch, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Shield, CreditCard, CheckCircle2, Loader2, QrCode, Building2, User, Hash, MapPin, Copy, ChevronLeft } from 'lucide-react';
+import { Shield, CreditCard, CheckCircle2, Loader2, QrCode, Building2, User, Hash, MapPin, Copy, ChevronLeft, Printer } from 'lucide-react';
 
 export default function Membership() {
   const [step, setStep] = useState(1);
@@ -50,6 +50,15 @@ export default function Membership() {
     address: '',
     phone: '',
     photoUrl: '',
+    donation: '',
+    armService: '',
+    branch: '',
+    decorations: '',
+    basicPension: '',
+    permanentAddress: '',
+    landline: '',
+    occupation: '',
+    otherInfo: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -59,11 +68,12 @@ export default function Membership() {
   const handleProceedToPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check if any field is empty
-    const emptyFields = Object.entries(formData).filter(([key, value]) => (value as string).trim() === '');
+    // Check if any mandatory field is empty
+    const mandatoryFields = ['serviceNo', 'rank', 'name', 'aadharNo', 'email', 'defenceService', 'dob', 'dateOfRetirement', 'serviceYears', 'ppoNo', 'spouseName', 'address', 'phone', 'photoUrl'];
+    const emptyFields = mandatoryFields.filter(key => (formData[key as keyof typeof formData] as string).trim() === '');
     
     if (emptyFields.length > 0) {
-      setError('All fields are mandatory. Please fill out the entire form.');
+      setError('Please fill out all mandatory fields.');
       return;
     }
 
@@ -331,16 +341,15 @@ export default function Membership() {
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
-                  <label htmlFor="panNo" className="block text-sm font-medium text-slate-700">PAN No *</label>
+                  <label htmlFor="panNo" className="block text-sm font-medium text-slate-700">PAN No</label>
                   <input
                     type="text"
                     name="panNo"
                     id="panNo"
-                    required
                     value={formData.panNo}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
-                    placeholder="PAN Number"
+                    placeholder="PAN Number (if issued)"
                   />
                 </div>
 
@@ -359,7 +368,7 @@ export default function Membership() {
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
-                  <label htmlFor="defenceService" className="block text-sm font-medium text-slate-700">Defence Service *</label>
+                  <label htmlFor="defenceService" className="block text-sm font-medium text-slate-700">Wing of the Defence Services *</label>
                   <select
                     name="defenceService"
                     id="defenceService"
@@ -373,6 +382,45 @@ export default function Membership() {
                     <option value="Navy">Navy</option>
                     <option value="Air Force">Air Force</option>
                   </select>
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="armService" className="block text-sm font-medium text-slate-700">Arm/Service</label>
+                  <input
+                    type="text"
+                    name="armService"
+                    id="armService"
+                    value={formData.armService}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Arm/Service"
+                  />
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="branch" className="block text-sm font-medium text-slate-700">Branch</label>
+                  <input
+                    type="text"
+                    name="branch"
+                    id="branch"
+                    value={formData.branch}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Branch"
+                  />
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="decorations" className="block text-sm font-medium text-slate-700">Decorations (if any)</label>
+                  <input
+                    type="text"
+                    name="decorations"
+                    id="decorations"
+                    value={formData.decorations}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Decorations"
+                  />
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
@@ -402,7 +450,7 @@ export default function Membership() {
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
-                  <label htmlFor="serviceYears" className="block text-sm font-medium text-slate-700">Service (Years) *</label>
+                  <label htmlFor="serviceYears" className="block text-sm font-medium text-slate-700">Total Service (Years Months Days) *</label>
                   <input
                     type="text"
                     name="serviceYears"
@@ -411,7 +459,20 @@ export default function Membership() {
                     value={formData.serviceYears}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
-                    placeholder="e.g. 22 Years"
+                    placeholder="e.g. 22 Years 5 Months 10 Days"
+                  />
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="basicPension" className="block text-sm font-medium text-slate-700">Amount of Basic Pension Rs pm as per PPO</label>
+                  <input
+                    type="text"
+                    name="basicPension"
+                    id="basicPension"
+                    value={formData.basicPension}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Rs."
                   />
                 </div>
 
@@ -430,7 +491,7 @@ export default function Membership() {
                 </div>
 
                 <div className="col-span-2 sm:col-span-1">
-                  <label htmlFor="spouseName" className="block text-sm font-medium text-slate-700">Name Of Spouse *</label>
+                  <label htmlFor="spouseName" className="block text-sm font-medium text-slate-700">Name of Spouse / Next of kin *</label>
                   <input
                     type="text"
                     name="spouseName"
@@ -439,21 +500,47 @@ export default function Membership() {
                     value={formData.spouseName}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
-                    placeholder="Spouse Name"
+                    placeholder="Spouse / Next of kin Name"
                   />
                 </div>
 
                 <div className="col-span-2">
-                  <label htmlFor="address" className="block text-sm font-medium text-slate-700">Address *</label>
+                  <label htmlFor="permanentAddress" className="block text-sm font-medium text-slate-700">Permanent Address</label>
+                  <textarea
+                    name="permanentAddress"
+                    id="permanentAddress"
+                    rows={2}
+                    value={formData.permanentAddress}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Permanent Address"
+                  />
+                </div>
+
+                <div className="col-span-2">
+                  <label htmlFor="address" className="block text-sm font-medium text-slate-700">Current/Correspondence Address *</label>
                   <textarea
                     name="address"
                     id="address"
-                    rows={3}
+                    rows={2}
                     required
                     value={formData.address}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
-                    placeholder="Full Residential Address"
+                    placeholder="Current Address"
+                  />
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="landline" className="block text-sm font-medium text-slate-700">Land Line No with STD Code</label>
+                  <input
+                    type="tel"
+                    name="landline"
+                    id="landline"
+                    value={formData.landline}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Land Line Number"
                   />
                 </div>
 
@@ -468,6 +555,45 @@ export default function Membership() {
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
                     placeholder="Mobile Number"
+                  />
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <label htmlFor="donation" className="block text-sm font-medium text-slate-700">Donation Rs (Optional)</label>
+                  <input
+                    type="number"
+                    name="donation"
+                    id="donation"
+                    value={formData.donation}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Donation Amount"
+                  />
+                </div>
+
+                <div className="col-span-2">
+                  <label htmlFor="occupation" className="block text-sm font-medium text-slate-700">Occupation (Post Retirement), if any</label>
+                  <textarea
+                    name="occupation"
+                    id="occupation"
+                    rows={2}
+                    value={formData.occupation}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Designation and Name of the organisation in which employed and its address"
+                  />
+                </div>
+
+                <div className="col-span-2">
+                  <label htmlFor="otherInfo" className="block text-sm font-medium text-slate-700">Any other info you want to share</label>
+                  <textarea
+                    name="otherInfo"
+                    id="otherInfo"
+                    rows={2}
+                    value={formData.otherInfo}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm p-3 border"
+                    placeholder="Other Information"
                   />
                 </div>
 
@@ -709,16 +835,138 @@ export default function Membership() {
                 <p className="text-xs text-slate-400 mt-2">Please save this ID to check your status later.</p>
               </div>
 
-              <div>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button
                   onClick={() => window.location.href = '/status'}
                   className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-900 hover:bg-slate-800 transition-colors"
                 >
                   Check Status Page
                 </button>
+                <button
+                  onClick={() => window.print()}
+                  className="inline-flex items-center justify-center py-3 px-6 border border-slate-300 shadow-sm text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+                >
+                  <Printer className="w-4 h-4 mr-2" />
+                  Print / Download Form
+                </button>
               </div>
             </div>
           )}
+
+          {/* Printable Form - Hidden on screen, visible on print */}
+          <div id="printable-form" className="hidden print:block p-8 bg-white text-black text-sm">
+            <div className="text-center mb-6 border-b-2 border-black pb-4">
+              <h1 className="text-2xl font-bold uppercase">Akhil Bharatiya Purva Sainik Seva Parishad</h1>
+              <h2 className="text-xl font-bold uppercase mt-1">Andhra Pradesh State</h2>
+              <h3 className="text-lg font-bold uppercase mt-1">Membership Form</h3>
+            </div>
+
+            <div className="flex justify-between items-start mb-6">
+              <div className="space-y-2">
+                <p><strong>Membership No:</strong> _________________</p>
+                <p><strong>Membership Fee:</strong> Rs. 100/-</p>
+                <p><strong>Donation Rs:</strong> {formData.donation || '_________________'}</p>
+              </div>
+              <div className="w-32 h-32 border-2 border-black flex items-center justify-center overflow-hidden">
+                {formData.photoUrl ? (
+                  <img src={formData.photoUrl} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-gray-400 text-xs">Photo</span>
+                )}
+              </div>
+            </div>
+
+            <table className="w-full border-collapse border border-black mb-6">
+              <tbody>
+                <tr>
+                  <td className="border border-black p-2 font-bold w-1/3">Service No, Rank, Name</td>
+                  <td className="border border-black p-2">{formData.serviceNo}, {formData.rank}, {formData.name}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Name of Spouse / Next of kin</td>
+                  <td className="border border-black p-2">{formData.spouseName}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Wing of the Defence Services</td>
+                  <td className="border border-black p-2">{formData.defenceService}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">A) Arm/Service<br/>B) Branch<br/>C) Decorations (if any)</td>
+                  <td className="border border-black p-2">
+                    A) {formData.armService}<br/>
+                    B) {formData.branch}<br/>
+                    C) {formData.decorations}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">A) Date of Retirement/Release, Total Service<br/>B) Date of Birth</td>
+                  <td className="border border-black p-2">
+                    A) {formData.dateOfRetirement}, {formData.serviceYears}<br/>
+                    B) {formData.dob}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Amount of Basic Pension Rs pm as per PPO, PPO No</td>
+                  <td className="border border-black p-2">{formData.basicPension}, {formData.ppoNo}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Aadhaar Card No</td>
+                  <td className="border border-black p-2">{formData.aadharNo}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">PAN Card No (if issued)</td>
+                  <td className="border border-black p-2">{formData.panNo}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">A) Permanent Address<br/>B) Current/Correspondence Address<br/>C) Land Line No, Mobile No<br/>D) Email ID</td>
+                  <td className="border border-black p-2">
+                    A) {formData.permanentAddress}<br/>
+                    B) {formData.address}<br/>
+                    C) {formData.landline}, {formData.phone}<br/>
+                    D) {formData.email}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Occupation (Post Retirement), if any</td>
+                  <td className="border border-black p-2">{formData.occupation}</td>
+                </tr>
+                <tr>
+                  <td className="border border-black p-2 font-bold">Any other info you want to share</td>
+                  <td className="border border-black p-2">{formData.otherInfo}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="mt-8">
+              <p className="font-bold mb-4">Declaration:</p>
+              <p className="text-justify mb-8">
+                I hereby declare that the information given above is true to the best of my knowledge and belief. I agree to abide by the rules and regulations of the Akhil Bharatiya Purva Sainik Seva Parishad.
+              </p>
+              
+              <div className="flex justify-between items-end mt-16">
+                <div>
+                  <p>Date: _________________</p>
+                  <p className="mt-2">Place: _________________</p>
+                </div>
+                <div className="text-center">
+                  <p>_________________________</p>
+                  <p className="mt-1 font-bold">Signature of the Applicant</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-12 border-t-2 border-black pt-4">
+              <h4 className="font-bold text-center mb-4">For Office Use Only</h4>
+              <div className="flex justify-between">
+                <p>Received Rs. 100/- towards Membership Fee.</p>
+                <p>Receipt No: _________________</p>
+              </div>
+              <div className="flex justify-between mt-8">
+                <p>Date: _________________</p>
+                <p>Signature of Authorized Signatory</p>
+              </div>
+            </div>
+          </div>
 
         </div>
         </div>
