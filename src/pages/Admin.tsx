@@ -40,7 +40,8 @@ export default function Admin() {
       setUser(currentUser);
       if (currentUser) {
         // Check if user is admin (using the email defined in rules)
-        if (currentUser.email?.toLowerCase() === 'abpsspap01@gmail.com' && currentUser.emailVerified) {
+        const userEmail = currentUser.email?.toLowerCase();
+        if ((userEmail === 'abpsspap01@gmail.com' || userEmail === 'satyashalem456@gmail.com') && currentUser.emailVerified) {
           setIsAdmin(true);
           fetchData('verification');
         } else {
